@@ -7,6 +7,7 @@ phases:
       - apt-get update -y
       - apt-get install -y nodejs npm
       - apt-get install -y zip
+      - npm config set registry="http://registry.npmjs.org/"
       - npm i -g serverless
   build:
     commands:
