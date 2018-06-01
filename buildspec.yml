@@ -4,6 +4,9 @@ phases:
 
   install:
     commands:
+      - apt-get update -y
+      - apt-get install npm
+      - apt-get install zip
       - npm i -g serverless
   build:
     commands:
