@@ -2,8 +2,10 @@ service: api
 
 provider:
   name: aws
+  stage: ${opt:stage, 'dev'}
+  environment:
+    ENVIRONMENT_PATH: ${self:provider.stage}
   runtime: dotnetcore2.0
-
   iamRoleStatements:
     - Effect: "Allow"
       Action:
