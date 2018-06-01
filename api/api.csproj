@@ -17,4 +17,10 @@
   <ItemGroup>
     <DotNetCliToolReference Include="Amazon.Lambda.Tools" Version="2.0.1" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Common\Common.csproj">
+      <Project>{E47169ED-6867-4AB6-AFD9-9DA47500F24F}</Project>
+      <Name>Common</Name>
+    </ProjectReference>
+  </ItemGroup>
 </Project>

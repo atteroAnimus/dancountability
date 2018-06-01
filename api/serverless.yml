@@ -13,6 +13,7 @@ provider:
         - "dynamodb:Scan"
         - "dynamodb:UpdateItem"
         - "dynamodb:DeleteItem"
+        - "ssm:GetParametersByPath"
       Resource: '*'
 package:
   artifact: bin/release/netcoreapp2.0/deploy-package.zip

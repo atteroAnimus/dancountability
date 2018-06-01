@@ -6,6 +6,7 @@ using Amazon.DynamoDBv2;
 using Amazon.DynamoDBv2.DocumentModel;
 using Amazon.Lambda.Core;
 using Amazon.Lambda.APIGatewayEvents;
+using Common;
 using Microsoft.AspNetCore.WebUtilities;
 using Environment = System.Environment;
 
@@ -15,7 +16,18 @@ namespace Api
 {
     public class Handler
     {
-        public APIGatewayProxyResponse Log(APIGatewayProxyRequest request, ILambdaContext context)
+	    private readonly IAppConfig _config;
+	    public Handler()
+	    {
+		    _config = AppConfig.Instance;
+	    }
+
+	    public Handler(IAppConfig config)
+	    {
+		    _config = config;
+	    }
+
+	    public APIGatewayProxyResponse Log(APIGatewayProxyRequest request, ILambdaContext context)
         {
             var stopwatch = new Stopwatch();
             stopwatch.Start();
@@ -25,8 +37,7 @@ namespace Api
 
             var text = items.FirstOrDefault(x => x.Key.ToLower() == "text").Value;
             var token = items.FirstOrDefault(x => x.Key.ToLower() == "token").Value;
-            var checkToken = Environment.GetEnvironmentVariable("al-slack-verification-token");
-            Console.WriteLine($"checkToken: {checkToken} | token: {token}");
+            var checkToken = _config.GetParameter("al-slack-verification-token");
 	        if (token != checkToken)
             {
                 return new APIGatewayProxyResponse
@@ -38,7 +49,7 @@ namespace Api
             {
                 using (var client = new AmazonDynamoDBClient())
                 {
-                    var logs = Table.LoadTable(client, "ActivityLogs");
+                    var logs = Table.LoadTable(client, "ActivityLog");
                     var doc = new Document
                     {
                         ["Id"] = Guid.NewGuid().ToString(),
