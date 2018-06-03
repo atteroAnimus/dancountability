@@ -9,8 +9,8 @@
     <PackageReference Include="Amazon.Lambda.APIGatewayEvents" Version="1.1.3" />
     <PackageReference Include="Amazon.Lambda.Core" Version="1.0.0" />
     <PackageReference Include="Amazon.Lambda.Serialization.Json" Version="1.1.0" />
-    <PackageReference Include="AWSSDK.Core" Version="3.3.23" />
-    <PackageReference Include="AWSSDK.DynamoDBv2" Version="3.3.8" />
+    <PackageReference Include="AWSSDK.Core" Version="3.3.23.1" />
+    <PackageReference Include="AWSSDK.DynamoDBv2" Version="3.3.8.1" />
     <PackageReference Include="AWSSDK.Lambda" Version="3.3.13.2" />
     <PackageReference Include="Microsoft.AspNetCore.WebUtilities" Version="2.1.0" />
   </ItemGroup>
@@ -22,5 +22,6 @@
       <Project>{E47169ED-6867-4AB6-AFD9-9DA47500F24F}</Project>
       <Name>Common</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Core\Core.csproj" />
   </ItemGroup>
 </Project>

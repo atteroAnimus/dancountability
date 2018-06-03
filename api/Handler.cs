@@ -7,8 +7,9 @@ using Amazon.DynamoDBv2.DocumentModel;
 using Amazon.Lambda.Core;
 using Amazon.Lambda.APIGatewayEvents;
 using Common;
+using Core;
+using IocFactory;
 using Microsoft.AspNetCore.WebUtilities;
-using Environment = System.Environment;
 
 [assembly: LambdaSerializer(typeof(Amazon.Lambda.Serialization.Json.JsonSerializer))]
 
@@ -17,9 +18,11 @@ namespace Api
     public class Handler
     {
 	    private readonly IAppConfig _config;
+	    private readonly IMessageHandler _messagHandler;
 	    public Handler()
 	    {
-		    _config = AppConfig.Instance;
+		    _config = Factory.Instance.Resolve<IAppConfig>();
+		    _messagHandler = Factory.Instance.Resolve<IMessageHandler>();
 	    }
 
 	    public Handler(IAppConfig config)
@@ -29,7 +32,8 @@ namespace Api
 
 	    public APIGatewayProxyResponse Log(APIGatewayProxyRequest request, ILambdaContext context)
         {
-            var stopwatch = new Stopwatch();
+            //TODO: extract this out into business logic.  This method should only call a BL method which queues the data
+	        var stopwatch = new Stopwatch();
             stopwatch.Start();
             var query = QueryHelpers.ParseQuery(request.Body);
             var items = query.SelectMany(x => x.Value, (col, value) => new KeyValuePair<string, string>(col.Key, value))
@@ -45,29 +49,20 @@ namespace Api
                     StatusCode = 403
                 };
             }
-            try
-            {
-                using (var client = new AmazonDynamoDBClient())
-                {
-                    var logs = Table.LoadTable(client, "ActivityLog");
-                    var doc = new Document
-                    {
-                        ["Id"] = Guid.NewGuid().ToString(),
-                        ["InsertDate"] = DateTime.UtcNow.ToString("yyyy-MM-dd hh:mm:ss"),
-                        ["ActivityText"] = text
-                    };
-                    var result = logs.PutItemAsync(doc).Result;
-                }
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e);
-                return new APIGatewayProxyResponse
-                {
-                    StatusCode = 500,
-                    Body = $"Exception Occurred: {e}"
-                };
-            }
+
+	        try
+	        {
+		        _messagHandler.BufferRawMessage(text);
+	        }
+	        catch (Exception e)
+	        {
+		        Console.WriteLine(e);
+		        return new APIGatewayProxyResponse
+		        {
+			        StatusCode = 500,
+			        Body = $"Exception Occurred: {e}"
+		        };
+	        }
             
             stopwatch.Stop();
             
