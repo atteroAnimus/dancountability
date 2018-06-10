@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Linq;
 using System.Net;
-using System.Runtime.InteropServices.ComTypes;
 using Amazon.SQS;
 using Amazon.SQS.Model;
 using Common;
