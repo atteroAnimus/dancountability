@@ -24,8 +24,9 @@ namespace IocFactory
 					x.WithDefaultConventions();
 				});
 				config.Populate(collection);
+				
 			});
-
+			
 			_provider = container.GetInstance<IServiceProvider>();
 		}
 		

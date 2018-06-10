@@ -17,7 +17,7 @@ namespace Core
 		private readonly string _queueUrl;
 		public Queuable()
 		{
-			_client = Factory.Instance.Resolve<IAmazonSQS>();
+			_client = new AmazonSQSClient();
 			_config = Factory.Instance.Resolve<IAppConfig>();
 			_queueUrl = _config.GetParameter("INCOMING_QUEUE_URL");
 

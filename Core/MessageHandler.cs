@@ -13,7 +13,15 @@ namespace Core
 		public MessageHandler()
 		{
 			_queue = Factory.Instance.Resolve<IQueuable>();
+			_data = Factory.Instance.Resolve<IData>();
 		}
+
+		public MessageHandler(IQueuable queuable, IData data)
+		{
+			_queue = queuable;
+			_data = data;
+		}
+
 		public void BufferRawMessage(string rawLog)
 		{
 			var log = new LogModel(rawLog);
@@ -38,8 +46,6 @@ namespace Core
 				_data.Save(message.ToEntity());
 				message = _queue.Pop<InsertionModel>();
 			}
-
-
 		}
 
 		private static ActivityType Convert(string val)

@@ -1,15 +1,12 @@
 using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using Amazon.DynamoDBv2;
-using Amazon.DynamoDBv2.DocumentModel;
 using Amazon.Lambda.Core;
 using Amazon.Lambda.APIGatewayEvents;
 using Common;
 using Core;
 using IocFactory;
-using Microsoft.AspNetCore.WebUtilities;
+using Logging;
 
 [assembly: LambdaSerializer(typeof(Amazon.Lambda.Serialization.Json.JsonSerializer))]
 
@@ -19,29 +16,37 @@ namespace Api
     {
 	    private readonly IAppConfig _config;
 	    private readonly IMessageHandler _messagHandler;
+	    private readonly ILogger _logger;
+	    private readonly ApiHelper _helper;
 	    public Handler()
 	    {
 		    _config = Factory.Instance.Resolve<IAppConfig>();
 		    _messagHandler = Factory.Instance.Resolve<IMessageHandler>();
+		    _helper = new ApiHelper();
+		    _logger = Factory.Instance.Resolve<ILogger>();
 	    }
 
-	    public Handler(IAppConfig config)
+	    public Handler(IAppConfig config, IMessageHandler handler, ApiHelper helper, ILogger logger)
 	    {
 		    _config = config;
+		    _messagHandler = handler;
+		    _helper = helper;
+		    _logger = logger;
 	    }
+
+	    
 
 	    public APIGatewayProxyResponse Log(APIGatewayProxyRequest request, ILambdaContext context)
         {
-            //TODO: extract this out into business logic.  This method should only call a BL method which queues the data
 	        var stopwatch = new Stopwatch();
             stopwatch.Start();
-            var query = QueryHelpers.ParseQuery(request.Body);
-            var items = query.SelectMany(x => x.Value, (col, value) => new KeyValuePair<string, string>(col.Key, value))
-                .ToList();
-
-            var text = items.FirstOrDefault(x => x.Key.ToLower() == "text").Value;
+	        
+	        var items = _helper.ExtractValues(request.Body).ToList();
+            
+	        var text = items.FirstOrDefault(x => x.Key.ToLower() == "text").Value;
             var token = items.FirstOrDefault(x => x.Key.ToLower() == "token").Value;
             var checkToken = _config.GetParameter("al-slack-verification-token");
+	        
 	        if (token != checkToken)
             {
                 return new APIGatewayProxyResponse
@@ -56,7 +61,7 @@ namespace Api
 	        }
 	        catch (Exception e)
 	        {
-		        Console.WriteLine(e);
+		        _logger.Log(e.ToString());
 		        return new APIGatewayProxyResponse
 		        {
 			        StatusCode = 500,
