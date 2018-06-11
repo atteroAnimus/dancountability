@@ -8,6 +8,7 @@ ProjectSection(SolutionItems) = preProject
 	.gitignore = .gitignore
 	.editorconfig = .editorconfig
 	buildspec.yml = buildspec.yml
+	api\build.sh = api\build.sh
 EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Common", "Common\Common.csproj", "{E47169ED-6867-4AB6-AFD9-9DA47500F24F}"
