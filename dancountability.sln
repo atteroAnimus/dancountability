@@ -8,6 +8,7 @@ ProjectSection(SolutionItems) = preProject
 	.gitignore = .gitignore
 	.editorconfig = .editorconfig
 	buildspec.yml = buildspec.yml
+	.circleci/config.yml = .circleci/config.yml
 	api\build.sh = api\build.sh
 EndProjectSection
 EndProject
