@@ -13,5 +13,6 @@
   <ItemGroup>
     <ProjectReference Include="..\api\api.csproj" />
     <ProjectReference Include="..\Core\Core.csproj" />
+    <ProjectReference Include="..\Logging\Logging.csproj" />
   </ItemGroup>
 </Project>

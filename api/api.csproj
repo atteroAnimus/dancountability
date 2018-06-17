@@ -22,5 +22,7 @@
       <Project>{E47169ED-6867-4AB6-AFD9-9DA47500F24F}</Project>
       <Name>Common</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Core\Core.csproj" />
+    <ProjectReference Include="..\Logging\Logging.csproj" />
   </ItemGroup>
 </Project>

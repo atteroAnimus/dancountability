@@ -36,14 +36,14 @@ namespace api.Tests
 			messageHandler.Setup(x => x.BufferRawMessage(It.IsAny<string>()))
 				.Callback<string>(x => _output.WriteLine($"received {x} for buffering")).Verifiable();
 
-//			var logger = new Mock<Logging.ILogger>();
-//			logger.Setup(x => x.Log(It.IsAny<string>())).Callback<string>(_output.WriteLine);
-//			var handler = new Handler(appConfig.Object,messageHandler.Object, helper.Object, logger.Object);
+			var logger = new Mock<Logging.ILogger>();
+			logger.Setup(x => x.Log(It.IsAny<string>())).Callback<string>(_output.WriteLine);
+			var handler = new Handler(appConfig.Object,messageHandler.Object, helper.Object, logger.Object);
 
 			
-			//var response = handler.Log(new APIGatewayProxyRequest(), null);//don't need real objects here because we're mocking them anyway
+			var response = handler.Log(new APIGatewayProxyRequest(), null);//don't need real objects here because we're mocking them anyway
 			helper.Verify(x => x.ExtractValues(It.IsAny<string>()), Times.Exactly(1));
-			//Assert.Equal((int)HttpStatusCode.OK, response.StatusCode);
+			Assert.Equal((int)HttpStatusCode.OK, response.StatusCode);
 			messageHandler.Verify(x => x.BufferRawMessage(It.IsAny<string>()), Times.Exactly(1));
 			
 
