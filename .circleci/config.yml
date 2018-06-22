@@ -18,7 +18,7 @@ jobs:
           name: show contents of TestResults directory
           command: ls -R TestResults/
       - store_test_results:
-          path: TestResults
+          path: ./TestResults
       - run:
           name: Run build scripts
           command: cd api/; ./build.sh
