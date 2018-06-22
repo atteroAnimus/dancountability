@@ -7,7 +7,8 @@ jobs:
       - checkout
       - run:
           name: Check
-          command: serverless --version
+          command: ls -l
+          command: pwd
       - run:
           name: Greeting
           command: echo Hello, world.
