@@ -6,14 +6,8 @@ jobs:
     steps:
       - checkout
       - run:
-          name: Check
-          command: pwd
-      - run:
-          name: directory contents
-          command: ls -l
-      - run:
-          name: Greeting
-          command: echo Hello, world.
-      - run:
-          name: Print the Current Time
-          command: date
+          name: restore
+          command: dotnet restore
+      - test:
+          override:
+            - dotnet test ./api.Tests/api.Tests.csproj
