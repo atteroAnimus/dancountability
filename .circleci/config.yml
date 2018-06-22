@@ -8,6 +8,6 @@ jobs:
       - run:
           name: restore
           command: dotnet restore
-      - test:
-          override:
-            - dotnet test ./api.Tests/api.Tests.csproj
+      - run:
+          name: Test api.Tests.csproj
+          command: dotnet test ./api.Tests/api.Tests.csproj 
