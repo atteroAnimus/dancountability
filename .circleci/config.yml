@@ -7,8 +7,10 @@ jobs:
       - checkout
       - run:
           name: Check
-          command: ls -l
           command: pwd
+      - run:
+          name: directory contents
+          command: ls -l
       - run:
           name: Greeting
           command: echo Hello, world.
