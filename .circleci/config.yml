@@ -6,6 +6,9 @@ jobs:
     steps:
       - checkout
       - run:
+          name: Check
+          command: serverless --version
+      - run:
           name: Greeting
           command: echo Hello, world.
       - run:
