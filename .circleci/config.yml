@@ -14,6 +14,9 @@ jobs:
       - run:
           name: Test Core.Tests
           command: dotnet test ./Core.Tests/Core.Tests.csproj --logger "trx;LogFileName=../../TestResults/Core.Tests/result.trx"
+      - run:
+          name: show contents of TestResults directory
+          command: ls -R TestResults/
       - store_test_results:
           path: TestResults
       - run:
