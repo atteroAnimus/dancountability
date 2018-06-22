@@ -5,6 +5,7 @@ using Amazon.Lambda.Core;
 using Amazon.Lambda.APIGatewayEvents;
 using Common;
 using Core;
+using IocFactory;
 using Logging;
 
 [assembly: LambdaSerializer(typeof(Amazon.Lambda.Serialization.Json.JsonSerializer))]
@@ -19,7 +20,10 @@ namespace Api
 	    private readonly ApiHelper _helper;
 	    public Handler()
 	    {
-		    _config = AppConfig.Instance;
+		    _config = Factory.Instance.Resolve<IAppConfig>();
+		    _messagHandler = Factory.Instance.Resolve<IMessageHandler>();
+		    _logger = Factory.Instance.Resolve<ILogger>();
+		    _helper = new ApiHelper();
 	    }
 
 	    public Handler(IAppConfig config, IMessageHandler handler, ApiHelper helper, ILogger logger)
