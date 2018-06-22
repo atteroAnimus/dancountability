@@ -5,12 +5,18 @@ jobs:
       - image: dantaylor/serverless-build-helper
     steps:
       - checkout
-      - store_test_results:
-          path: TestResults
       - run:
           name: restore
           command: dotnet restore
       - run:
           name: Test api.Tests.csproj
           command: dotnet test ./api.Tests/api.Tests.csproj --logger "trx;LogFileName=../../TestResults/Api.Tests/result.trx"
+      - run:
+          name: Test Core.Tests
+          command: dotnet test ./Core.Tests/Core.Tests.csproj --logger "trx;LogFileName=../../TestResults/Core.Tests/result.trx"
+      - store_test_results:
+          path: TestResults
+      - run:
+          name: Run build scripts
+          command: ./api/build.sh
       
