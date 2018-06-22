@@ -10,4 +10,6 @@ jobs:
           command: dotnet restore
       - run:
           name: Test api.Tests.csproj
-          command: dotnet test ./api.Tests/api.Tests.csproj 
+          command: dotnet test ./api.Tests/api.Tests.csproj
+      - store_test_results:
+          path: ./api.Tests/TestResults/result.trx 
