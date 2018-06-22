@@ -12,4 +12,4 @@ jobs:
           name: Test api.Tests.csproj
           command: dotnet test ./api.Tests/api.Tests.csproj --logger "trx;LogFileName=result.trx"
       - store_test_results:
-          path: ./api.Tests/TestResults/result.trx 
+          path: ./api.Tests/TestResults/result.trx
