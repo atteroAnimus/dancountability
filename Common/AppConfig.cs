@@ -16,7 +16,7 @@ namespace Common
 			System.Environment.GetEnvironmentVariable("parameter-path") ?? $"/dancountability/{Environment}/settings/";
 
 		private static volatile AppConfig _instance;
-		private static readonly object _syncRoot = new Object();
+		private static readonly object _syncRoot = new object();
 		private Dictionary<string, string> Parameters { get; set; }
 		
 		public static AppConfig Instance
