@@ -6,8 +6,10 @@ jobs:
     steps:
       - checkout
       - run:
-          name: Greeting
-          command: echo Hello, world.
+          name: restore
+          command: dotnet restore
       - run:
-          name: Print the Current Time
-          command: date
+          name: Test api.Tests.csproj
+          command: dotnet test ./api.Tests/api.Tests.csproj --logger "trx;LogFileName=result.trx"
+      - store_test_results:
+          path: ./api.Tests/TestResults/result.trx

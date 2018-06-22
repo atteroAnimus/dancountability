@@ -43,7 +43,7 @@ namespace Core
 			var message = _queue.Pop<InsertionModel>();
 			while (message != null)
 			{
-				_data.Save(message.ToEntity());
+//				_data.Save(message.ToEntity());
 				message = _queue.Pop<InsertionModel>();
 			}
 		}

@@ -2,7 +2,6 @@ using System;
 using Core.Models;
 using Data;
 using Moq;
-using Newtonsoft.Json;
 using Xunit;
 using Xunit.Abstractions;
 
@@ -22,7 +21,7 @@ namespace Core.Tests
 		{
 			var queueMock = new Mock<IQueuable>();
 			queueMock.Setup(x => x.Push(It.IsAny<InsertionModel>())).Callback<InsertionModel>(x =>
-				_output.WriteLine($"successfully pushed {x.ActivityType} to queue"))
+					_output.WriteLine($"successfully pushed {x.ActivityType} to queue"))
 				.Verifiable();
 			var dataMock = new Mock<IData>();
 			dataMock.Setup(x => x.Save(It.IsAny<LogEntity>()))
@@ -53,12 +52,11 @@ namespace Core.Tests
 			queueMock.Setup(x => x.Pop<InsertionModel>())
 				.Returns(() =>
 				{
-					if(numMessagesInQueue <= 0) return null;
+					if (numMessagesInQueue <= 0) return null;
 					--numMessagesInQueue;
 					return new InsertionModel(ActivityType.Sb, DateTime.UtcNow);
-
 				});
-			
+
 			var messageHandler = new MessageHandler(queueMock.Object, dataMock.Object);
 			messageHandler.PersistMessage();
 			dataMock.Verify(x => x.Save(It.IsAny<LogEntity>()), Times.Exactly(numberOfMessages));

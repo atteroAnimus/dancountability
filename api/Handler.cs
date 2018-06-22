@@ -22,61 +22,61 @@ namespace Api
 	    {
 		    _config = Factory.Instance.Resolve<IAppConfig>();
 		    _messagHandler = Factory.Instance.Resolve<IMessageHandler>();
-		    _helper = new ApiHelper();
 		    _logger = Factory.Instance.Resolve<ILogger>();
+		    _helper = new ApiHelper();
 	    }
 
 	    public Handler(IAppConfig config, IMessageHandler handler, ApiHelper helper, ILogger logger)
 	    {
 		    _config = config;
-		    _messagHandler = handler;
 		    _helper = helper;
 		    _logger = logger;
+		    _messagHandler = handler;
 	    }
 
 	    
 
 	    public APIGatewayProxyResponse Log(APIGatewayProxyRequest request, ILambdaContext context)
-        {
-	        var stopwatch = new Stopwatch();
-            stopwatch.Start();
+	    {
+		    var stopwatch = new Stopwatch();
+		    stopwatch.Start();
 	        
-	        var items = _helper.ExtractValues(request.Body).ToList();
+		    var items = _helper.ExtractValues(request.Body).ToList();
             
-	        var text = items.FirstOrDefault(x => x.Key.ToLower() == "text").Value;
-            var token = items.FirstOrDefault(x => x.Key.ToLower() == "token").Value;
-            var checkToken = _config.GetParameter("al-slack-verification-token");
+		    var text = items.FirstOrDefault(x => x.Key.ToLower() == "text").Value;
+		    var token = items.FirstOrDefault(x => x.Key.ToLower() == "token").Value;
+		    var checkToken = _config.GetParameter("al-slack-verification-token");
 	        
-	        if (token != checkToken)
-            {
-                return new APIGatewayProxyResponse
-                {
-                    StatusCode = 403
-                };
-            }
+		    if (token != checkToken)
+		    {
+			    return new APIGatewayProxyResponse
+			    {
+				    StatusCode = 403
+			    };
+		    }
 
-	        try
-	        {
-		        _messagHandler.BufferRawMessage(text);
-	        }
-	        catch (Exception e)
-	        {
-		        _logger.Log(e.ToString());
-		        return new APIGatewayProxyResponse
-		        {
-			        StatusCode = 500,
-			        Body = $"Exception Occurred: {e}"
-		        };
-	        }
+		    try
+		    {
+			    _messagHandler.BufferRawMessage(text);
+		    }
+		    catch (Exception e)
+		    {
+			    _logger.Log(e.ToString());
+			    return new APIGatewayProxyResponse
+			    {
+				    StatusCode = 500,
+				    Body = $"Exception Occurred: {e}"
+			    };
+		    }
             
-            stopwatch.Stop();
+		    stopwatch.Stop();
             
-            return new APIGatewayProxyResponse
-            {
-                StatusCode = 200,
-                Body = $"recorded successfully in {stopwatch.ElapsedMilliseconds} miliseconds"
-            };
-        }
+		    return new APIGatewayProxyResponse
+		    {
+			    StatusCode = 200,
+			    Body = $"recorded successfully in {stopwatch.ElapsedMilliseconds} miliseconds"
+		    };
+	    }
     }
 
     
