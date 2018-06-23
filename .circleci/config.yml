@@ -9,6 +9,21 @@ jobs:
           name: restore
           command: dotnet restore
       - run:
+          name: Run build scripts
+          command: | 
+            cd api/
+            ./build.sh
+      - store_artifacts:
+          path: artifacts
+  test:
+    docker:
+      - image: dantaylor/serverless-build-helper
+    steps:
+      - checkout
+      - run:
+          name: restore
+          command: dotnet restore
+      - run:
           name: Test api.Tests.csproj
           command: dotnet test ./api.Tests/api.Tests.csproj --logger "trx;LogFileName=../../artifacts/test-results/Api.Tests/result.trx"
       - run:
@@ -16,10 +31,9 @@ jobs:
           command: dotnet test ./Core.Tests/Core.Tests.csproj --logger "trx;LogFileName=../../artifacts/test-results/Core.Tests/result.trx"
       - store_test_results:
           path: artifacts/test-results
-      - run:
-          name: Run build scripts
-          command: cd api/; ./build.sh
-      - store_artifacts:
-          path: artifacts
-      
-      
+  workflows:
+    version: 2
+    build_and_test:
+      jobs:
+        - build
+        - test
