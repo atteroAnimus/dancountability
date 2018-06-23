@@ -16,9 +16,10 @@ jobs:
           command: dotnet test ./Core.Tests/Core.Tests.csproj --logger "trx;LogFileName=../../artifacts/test-results/Core.Tests/result.trx"
       - store_test_results:
           path: artifacts/test-results
-      - store_artifacts:
-          path: artifacts
       - run:
           name: Run build scripts
           command: cd api/; ./build.sh
+      - store_artifacts:
+          path: artifacts
+      
       
