@@ -27,7 +27,6 @@ functions:
       - http:
           path: log
           method: post
-
 resources:
   Resources:
     s3WebSite:

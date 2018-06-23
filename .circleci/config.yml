@@ -10,17 +10,14 @@ jobs:
           command: dotnet restore
       - run:
           name: Test api.Tests.csproj
-          command: dotnet test ./api.Tests/api.Tests.csproj --logger "trx;LogFileName=../../TestResults/Api.Tests/result.trx"
+          command: dotnet test ./api.Tests/api.Tests.csproj --logger "trx;LogFileName=../../artifacts/test-results/Api.Tests/result.trx"
       - run:
           name: Test Core.Tests
-          command: dotnet test ./Core.Tests/Core.Tests.csproj --logger "trx;LogFileName=../../TestResults/Core.Tests/result.trx"
-      - run:
-          name: show contents of TestResults directory
-          command: ls -R TestResults
+          command: dotnet test ./Core.Tests/Core.Tests.csproj --logger "trx;LogFileName=../../artifacts/test-results/Core.Tests/result.trx"
       - store_test_results:
-          path: TestResults
+          path: artifacts/test-results
       - store_artifacts:
-          path: TestResults
+          path: artifacts
       - run:
           name: Run build scripts
           command: cd api/; ./build.sh
