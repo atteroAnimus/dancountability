@@ -1,10 +1,13 @@
 version: 2
 jobs:
   build:
+    working_directory: ~/repo
     docker:
       - image: dantaylor/serverless-build-helper
     steps:
       - checkout
+      - attach_workspace:
+          at: .
       - run:
           name: diagnostics
           command: |
@@ -40,6 +43,10 @@ jobs:
             ./build.sh
       - store_artifacts:
           path: artifacts
+      - persist_to_workspace:
+          root: .
+          paths:
+            - artifacts
   test:
     docker:
       - image: dantaylor/serverless-build-helper
@@ -61,6 +68,8 @@ jobs:
       enabled: true
     steps:
       - checkout
+      - attach_workspace:
+          at: .
       - run:
           name: deploy serverless code
           command: |
