@@ -9,31 +9,6 @@ jobs:
       - attach_workspace:
           at: .
       - run:
-          name: diagnostics
-          command: |
-            echo $CIRCLE_BRANCH
-            echo $CIRCLE_BUILD_NUM
-            echo $CIRCLE_BUILD_URL
-            echo $CIRCLE_COMPARE_URL
-            echo $CIRCLE_INTERNAL_TASK_DATA
-            echo $CIRCLE_JOB
-            echo $CIRCLE_NODE_INDEX
-            echo $CIRCLE_NODE_TOTAL
-            echo $CIRCLE_PR_NUMBER
-            echo $CIRCLE_PR_REPONAME
-            echo $CIRCLE_PREVIOUS_BUILD_NUM
-            echo $CIRCLE_PROJECT_REPONAME
-            echo $CIRCLE_PULL_REQUEST
-            echo $CIRCLE_PULL_REQUESTS
-            echo $CIRCLE_REPOSITORY_URL
-            echo $CIRCLE_SHA1
-            echo $CIRCLE_TAG
-            echo $CIRCLE_USERNAME
-            echo $CIRCLE_WORKFLOW_ID
-            echo $CIRCLE_WORKING_DIRECTORY
-            echo $CIRCLECI
-            echo $HOME
-      - run:
           name: restore
           command: dotnet restore
       - run:
@@ -46,18 +21,26 @@ jobs:
       - persist_to_workspace:
           root: .
           paths:
-            - artifacts
-  test:
+            - .*
+  api-tests:
     docker:
       - image: dantaylor/serverless-build-helper
     steps:
       - checkout
-      - run:
-          name: restore
-          command: dotnet restore
+      - attach_workspace:
+          at: .
       - run:
           name: Test api.Tests.csproj
           command: dotnet test ./api.Tests/api.Tests.csproj --logger "trx;LogFileName=../../artifacts/test-results/Api.Tests/result.xml"
+      - store_test_results:
+          path: artifacts/test-results
+  core-tests:
+    docker:
+      - image: dantaylor/serverless-build-helper
+    steps:
+      - checkout
+      - attach_workspace:
+          at: .
       - run:
           name: Test Core.Tests
           command: dotnet test ./Core.Tests/Core.Tests.csproj --logger "trx;LogFileName=../../artifacts/test-results/Core.Tests/result.xml"
@@ -81,8 +64,14 @@ workflows:
   build_and_test:
     jobs:
       - build
-      - test
+      - api-tests:
+          requires:
+            - build
+      - core-tests:
+          requires:
+            - build
       - deploy:
           requires:
             - build
-            - test
+            - api-tests
+            - core-tests
