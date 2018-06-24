@@ -57,9 +57,10 @@ jobs:
       - store_test_results:
           path: artifacts/test-results
   deploy:
-    docker:
-      - image: dantaylor/serverless-build-helper
+    machine:
+      enabled: true
     steps:
+      - checkout
       - run:
           name: deploy serverless code
           command: |
