@@ -75,4 +75,5 @@ resources:
       Type: AWS::SQS::Queue
       Properties:
         QueueName: activity-log-queue-${opt:stage, 'dev'}
+        #different queues for different environments
           
