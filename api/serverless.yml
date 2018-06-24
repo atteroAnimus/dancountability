@@ -71,8 +71,8 @@ resources:
             ProvisionedThroughput:
               ReadCapacityUnits: 1
               WriteCapacityUnits: 1
-      IncomingLogQueue:
-        Type: AWS::SQS::Queue
-        Properties:
-          QueueName: activity-log-queue-${opt:stage, 'dev'}
+    IncomingLogQueue:
+      Type: AWS::SQS::Queue
+      Properties:
+        QueueName: activity-log-queue-${opt:stage, 'dev'}
           
