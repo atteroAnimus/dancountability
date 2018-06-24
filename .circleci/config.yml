@@ -1,10 +1,13 @@
 version: 2
 jobs:
   build:
+    working_directory: ~/repo
     docker:
       - image: dantaylor/serverless-build-helper
     steps:
       - checkout
+      - attach_workspace:
+          at: .
       - run:
           name: diagnostics
           command: |
@@ -40,6 +43,10 @@ jobs:
             ./build.sh
       - store_artifacts:
           path: artifacts
+      - persist_to_workspace:
+          root: .
+          paths:
+            - artifacts
   test:
     docker:
       - image: dantaylor/serverless-build-helper
@@ -57,16 +64,18 @@ jobs:
       - store_test_results:
           path: artifacts/test-results
   deploy:
-    machine:
-      enabled: true
+    docker:
+      - image: dantaylor/serverless-build-helper
     steps:
       - checkout
+      - attach_workspace:
+          at: .
       - run:
           name: deploy serverless code
           command: |
-            ls -laR
-            echo $CIRCLE_WORKING_DIRECTORY
-            ls -laR /root/project/artifacts
+            sls config credentials --provider aws --key $aws_access_key_id --secret $aws_secret_access_key
+            cd api/
+            sls deploy --v
 workflows:
   version: 2
   build_and_test:
