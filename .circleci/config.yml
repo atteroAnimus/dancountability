@@ -56,9 +56,22 @@ jobs:
           command: dotnet test ./Core.Tests/Core.Tests.csproj --logger "trx;LogFileName=../../artifacts/test-results/Core.Tests/result.xml"
       - store_test_results:
           path: artifacts/test-results
+  deploy:
+    docker:
+      - image: dantaylor/serverless-build-helper
+    steps:
+      run:
+        name: deploy serverless code
+        command: |
+          cd api/
+          serverless deploy --v
 workflows:
   version: 2
   build_and_test:
     jobs:
       - build
       - test
+      - deploy
+        requires:
+          - build
+          - test
