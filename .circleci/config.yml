@@ -60,11 +60,11 @@ jobs:
     docker:
       - image: dantaylor/serverless-build-helper
     steps:
-      run:
-        name: deploy serverless code
-        command: |
-          cd api/
-          serverless deploy --v
+      - run:
+          name: deploy serverless code
+          command: |
+            cd api/
+            serverless deploy --v
 workflows:
   version: 2
   build_and_test:
