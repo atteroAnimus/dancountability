@@ -21,7 +21,7 @@ jobs:
       - persist_to_workspace:
           root: .
           paths:
-            - .*
+            - artifacts
   api-tests:
     docker:
       - image: dantaylor/serverless-build-helper
@@ -34,10 +34,6 @@ jobs:
           command: dotnet test ./api.Tests/api.Tests.csproj --logger "trx;LogFileName=../../artifacts/test-results/Api.Tests/result.xml"
       - store_test_results:
           path: artifacts/test-results
-      - persist_to_workspace:
-          root: .
-          paths:
-            - .*
   core-tests:
     docker:
       - image: dantaylor/serverless-build-helper
@@ -50,10 +46,6 @@ jobs:
           command: dotnet test ./Core.Tests/Core.Tests.csproj --logger "trx;LogFileName=../../artifacts/test-results/Core.Tests/result.xml"
       - store_test_results:
           path: artifacts/test-results
-      - persist_to_workspace:
-          root: .
-          paths:
-            - .*
   deploy:
     docker:
       - image: dantaylor/serverless-build-helper
