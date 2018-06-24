@@ -64,8 +64,8 @@ jobs:
       - store_test_results:
           path: artifacts/test-results
   deploy:
-    machine:
-      enabled: true
+    docker:
+      -image: dantaylor/serverless-build-helper
     steps:
       - checkout
       - attach_workspace:
