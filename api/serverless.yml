@@ -74,5 +74,5 @@ resources:
       IncomingLogQueue:
         Type: AWS::SQS::Queue
         Properties:
-          QueueName: 
-                
+          QueueName: activity-log-queue-${opt:stage, 'dev'}
+          
