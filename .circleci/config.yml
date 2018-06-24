@@ -46,6 +46,16 @@ jobs:
           command: dotnet test ./Core.Tests/Core.Tests.csproj --logger "trx;LogFileName=../../artifacts/test-results/Core.Tests/result.xml"
       - store_test_results:
           path: artifacts/test-results
+  ioc-factory-tests:
+    docker:
+      - image: dantaylor/serverless-build-helper
+    steps:
+      - checkout
+      - attach_workspace:
+          at: .
+      - run:
+          name: Test IocFactory.Tests
+          command: dotnet test ./IocFactory.Tests/IocFactory.Tests.csproj --logger "trx;LogFileName=../../artifacts/test-results/IocFactory.Tests/result.xml"
   deploy:
     docker:
       - image: dantaylor/serverless-build-helper
@@ -68,6 +78,9 @@ workflows:
           requires:
             - build
       - core-tests:
+          requires:
+            - build
+      - ioc-factory-tests:
           requires:
             - build
       - deploy:
