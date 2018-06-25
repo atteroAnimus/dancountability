@@ -22,9 +22,10 @@ jobs:
           root: .
           paths:
             - artifacts
-  api-tests:
+  test:
     docker:
       - image: dantaylor/serverless-build-helper
+    parallelism: 4
     steps:
       - checkout
       - attach_workspace:
@@ -32,27 +33,9 @@ jobs:
       - run:
           name: Test api.Tests.csproj
           command: dotnet test ./api.Tests/api.Tests.csproj --logger "trx;LogFileName=../../artifacts/test-results/Api.Tests/result.xml"
-      - store_test_results:
-          path: artifacts/test-results
-  core-tests:
-    docker:
-      - image: dantaylor/serverless-build-helper
-    steps:
-      - checkout
-      - attach_workspace:
-          at: .
       - run:
           name: Test Core.Tests
           command: dotnet test ./Core.Tests/Core.Tests.csproj --logger "trx;LogFileName=../../artifacts/test-results/Core.Tests/result.xml"
-      - store_test_results:
-          path: artifacts/test-results
-  ioc-factory-tests:
-    docker:
-      - image: dantaylor/serverless-build-helper
-    steps:
-      - checkout
-      - attach_workspace:
-          at: .
       - run:
           name: Test IocFactory.Tests
           command: dotnet test ./IocFactory.Tests/IocFactory.Tests.csproj --logger "trx;LogFileName=../../artifacts/test-results/IocFactory.Tests/result.xml"
@@ -88,6 +71,4 @@ workflows:
       - deploy:
           requires:
             - build
-            - api-tests
-            - core-tests
-            - ioc-factory-tests
+            - test
