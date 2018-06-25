@@ -34,6 +34,8 @@ namespace Api
 		    _messagHandler = handler;
 	    }
 
+	    
+
 	    public APIGatewayProxyResponse Log(APIGatewayProxyRequest request, ILambdaContext context)
 	    {
 		    var stopwatch = new Stopwatch();

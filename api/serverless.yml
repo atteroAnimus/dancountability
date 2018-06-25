@@ -18,7 +18,8 @@ provider:
         - "ssm:GetParametersByPath"
       Resource: '*'
 package:
-  artifact: bin/release/netcoreapp2.0/deploy-package.zip
+  artifact: ../artifacts/deploy-package.zip 
+  #TODO: need to put in the git-sha onto this and/or tag it.  Should I also be pushing this to S3?
 
 functions:
   log:
@@ -27,7 +28,6 @@ functions:
       - http:
           path: log
           method: post
-
 resources:
   Resources:
     s3WebSite:
@@ -71,4 +71,9 @@ resources:
             ProvisionedThroughput:
               ReadCapacityUnits: 1
               WriteCapacityUnits: 1
-                
+    IncomingLogQueue:
+      Type: AWS::SQS::Queue
+      Properties:
+        QueueName: activity-log-queue-${opt:stage, 'dev'}
+        #different queues for different environments
+          

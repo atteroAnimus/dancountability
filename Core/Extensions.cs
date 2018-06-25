@@ -2,24 +2,24 @@
 using System.Collections.Generic;
 using System.Linq;
 using Core.Models;
-//using Data;
+using Data;
 
 namespace Core
 {
 	public static class Extensions
 	{
-//		public static LogEntity ToEntity(this InsertionModel model)
-//		{
-//			return new LogEntity
-//			{
-//				ActivityId = (int)model.ActivityType,
-//				DateString = model.InsertionDate
-//			};
-//		}
+		public static LogEntity ToEntity(this InsertionModel model)
+		{
+			return new LogEntity
+			{
+				ActivityId = (int)model.ActivityType,
+				DateString = model.InsertionDate
+			};
+		}
 
-//		public static IEnumerable<LogEntity> ToEntities(this IEnumerable<InsertionModel> models)
-//		{
-//			return models.Select(x => x.ToEntity());
-//		}
+		public static IEnumerable<LogEntity> ToEntities(this IEnumerable<InsertionModel> models)
+		{
+			return models.Select(x => x.ToEntity());
+		}
 	}
 }

@@ -1,15 +1,70 @@
 version: 2
 jobs:
   build:
+    working_directory: ~/repo
     docker:
       - image: dantaylor/serverless-build-helper
     steps:
       - checkout
+      - attach_workspace:
+          at: .
       - run:
           name: restore
           command: dotnet restore
       - run:
+          name: Run build scripts
+          command: | 
+            cd api/
+            ./build.sh
+      - store_artifacts:
+          path: artifacts
+      - persist_to_workspace:
+          root: .
+          paths:
+            - artifacts
+  test:
+    docker:
+      - image: dantaylor/serverless-build-helper
+    parallelism: 4
+    steps:
+      - checkout
+      - attach_workspace:
+          at: .
+      - run:
           name: Test api.Tests.csproj
-          command: dotnet test ./api.Tests/api.Tests.csproj --logger "trx;LogFileName=result.trx"
+          command: dotnet test ./api.Tests/api.Tests.csproj --logger "trx;LogFileName=../../artifacts/test-results/Api.Tests/result.xml"
+      - run:
+          name: Test Core.Tests
+          command: dotnet test ./Core.Tests/Core.Tests.csproj --logger "trx;LogFileName=../../artifacts/test-results/Core.Tests/result.xml"
+      - run:
+          name: Test IocFactory.Tests
+          command: dotnet test ./IocFactory.Tests/IocFactory.Tests.csproj --logger "trx;LogFileName=../../artifacts/test-results/IocFactory.Tests/result.xml"
       - store_test_results:
-          path: ./api.Tests/TestResults/result.trx
+          path: /root/project/artifacts/test-results
+      - store_artifacts:
+          path: artifacts/test-results
+  deploy:
+    docker:
+      - image: dantaylor/serverless-build-helper
+    steps:
+      - checkout
+      - attach_workspace:
+          at: .
+      - run:
+          name: deploy serverless code
+          command: |
+            sls config credentials --provider aws --key $aws_access_key_id --secret $aws_secret_access_key
+            cd api/
+            sls deploy --v
+workflows:
+  version: 2
+  build_and_test:
+    jobs:
+      - build
+      - test:
+          requires:
+            - build
+      - deploy:
+          requires:
+            - build
+            - test
