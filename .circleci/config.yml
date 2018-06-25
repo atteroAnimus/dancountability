@@ -90,3 +90,4 @@ workflows:
             - build
             - api-tests
             - core-tests
+            - ioc-factory-tests
