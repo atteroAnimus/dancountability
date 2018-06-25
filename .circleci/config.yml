@@ -57,8 +57,7 @@ jobs:
           name: Test IocFactory.Tests
           command: dotnet test ./IocFactory.Tests/IocFactory.Tests.csproj --logger "trx;LogFileName=../../artifacts/test-results/IocFactory.Tests/result.xml"
       - store_test_results:
-          path:
-            - artifacts/test-results
+          path: artifacts/test-results
   deploy:
     docker:
       - image: dantaylor/serverless-build-helper
