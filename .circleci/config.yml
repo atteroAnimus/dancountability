@@ -40,6 +40,8 @@ jobs:
           name: Test IocFactory.Tests
           command: dotnet test ./IocFactory.Tests/IocFactory.Tests.csproj --logger "trx;LogFileName=../../artifacts/test-results/IocFactory.Tests/result.xml"
       - store_test_results:
+          path: /root/project/artifacts/test-results
+      - store_artifacts:
           path: artifacts/test-results
   deploy:
     docker:
