@@ -59,13 +59,7 @@ workflows:
   build_and_test:
     jobs:
       - build
-      - api-tests:
-          requires:
-            - build
-      - core-tests:
-          requires:
-            - build
-      - ioc-factory-tests:
+      - test:
           requires:
             - build
       - deploy:
