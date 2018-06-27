@@ -46,6 +46,7 @@ namespace Api
 		    var text = items.FirstOrDefault(x => x.Key.ToLower() == "text").Value;
 		    var token = items.FirstOrDefault(x => x.Key.ToLower() == "token").Value;
 		    var checkToken = _config.GetParameter("al-slack-verification-token");
+		    Console.WriteLine($"{checkToken} against {token}");
 	        
 		    if (token != checkToken)
 		    {
