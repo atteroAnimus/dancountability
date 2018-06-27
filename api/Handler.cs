@@ -34,10 +34,9 @@ namespace Api
 		    _messagHandler = handler;
 	    }
 
-	    
-
 	    public APIGatewayProxyResponse Log(APIGatewayProxyRequest request, ILambdaContext context)
 	    {
+		    Console.WriteLine($"Debugging statement");
 		    var stopwatch = new Stopwatch();
 		    stopwatch.Start();
 	        
@@ -46,6 +45,8 @@ namespace Api
 		    var text = items.FirstOrDefault(x => x.Key.ToLower() == "text").Value;
 		    var token = items.FirstOrDefault(x => x.Key.ToLower() == "token").Value;
 		    var checkToken = _config.GetParameter("al-slack-verification-token");
+		    
+		    
 		    //checking the token validation
 		    Console.WriteLine($"{checkToken} against {token}");
 	        
