@@ -17,6 +17,7 @@ namespace Core
 		private readonly string _queueUrl;
 		public Queuable()
 		{
+			_config = Factory.Instance.Resolve<IAppConfig>();
 			_queueUrl = _config.GetParameter("incoming-q-url");
 			var sqsConfig = new AmazonSQSConfig
 			{
@@ -24,7 +25,6 @@ namespace Core
 				RegionEndpoint = _config.Region().ToEndpoint()
 			};
 			_client = new AmazonSQSClient(sqsConfig);
-			_config = Factory.Instance.Resolve<IAppConfig>();
 			
 
 		}
