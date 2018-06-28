@@ -8,7 +8,7 @@ namespace Common
 {
 	public class AppConfig : IAppConfig
 	{
-		public string Region => System.Environment.GetEnvironmentVariable("region") ?? "us-east-1";
+		private string _region => System.Environment.GetEnvironmentVariable("region") ?? "us-east-1";
 		public string Profile => System.Environment.GetEnvironmentVariable("profile") ?? "default";
 		public string ServiceName => System.Environment.GetEnvironmentVariable("service-name") ?? "dancountability";
 		private static string Environment => System.Environment.GetEnvironmentVariable("ENVIRONMENT_PATH");
@@ -86,6 +86,11 @@ namespace Common
 			{
 				throw new Exception($"{parameterName} not found in parameter dictionary check: {Instance.ParameterPath}{parameterName} is in SSM Parameter Store.");
 			}
+		}
+
+		public string Region()
+		{
+			return _region;
 		}
 	}
 }

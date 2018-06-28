@@ -5,5 +5,6 @@ namespace Common
 	public interface IAppConfig
 	{
 		string GetParameter(string parameterName);
+		string Region();
 	}
 }

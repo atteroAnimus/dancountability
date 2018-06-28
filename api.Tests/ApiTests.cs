@@ -5,6 +5,7 @@ using Amazon.Lambda.APIGatewayEvents;
 using Api;
 using Common;
 using Core;
+using IocFactory;
 using Moq;
 using Xunit;
 using Xunit.Abstractions;
@@ -44,6 +45,13 @@ namespace api.Tests
 			helper.Verify(x => x.ExtractValues(It.IsAny<string>()), Times.Exactly(1));
 			Assert.Equal((int)HttpStatusCode.OK, response.StatusCode);
 			messageHandler.Verify(x => x.BufferRawMessage(It.IsAny<string>()), Times.Exactly(1));
+		}
+
+		[Fact]
+		public void TestResolveCore()
+		{
+			var messageHandler = Factory.Instance.Resolve<IMessageHandler>();
+			Assert.True(messageHandler is MessageHandler);
 		}
 	}
 }

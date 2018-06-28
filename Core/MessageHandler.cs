@@ -19,7 +19,7 @@ namespace Core
 		public MessageHandler(IQueuable queuable, IData data)
 		{
 			_queue = queuable;
-			_data = data;
+			_data = data;	
 		}
 
 		public void BufferRawMessage(string rawLog)

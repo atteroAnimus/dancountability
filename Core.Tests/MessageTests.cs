@@ -1,4 +1,6 @@
 using System;
+using Amazon;
+using Amazon.SQS;
 using Core.Models;
 using Data;
 using Moq;
@@ -60,6 +62,12 @@ namespace Core.Tests
 			var messageHandler = new MessageHandler(queueMock.Object, dataMock.Object);
 			messageHandler.PersistMessage();
 			dataMock.Verify(x => x.Save(It.IsAny<LogEntity>()), Times.Exactly(numberOfMessages));
+		}
+
+		[Fact]
+		public void TestCreateQueue()
+		{
+			var queue = new AmazonSQSClient(RegionEndpoint.USEast1);
 		}
 	}
 }

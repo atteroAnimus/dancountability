@@ -30,6 +30,14 @@ functions:
           method: post
 resources:
   Resources:
+    incomingQueueParameter:
+      Type: AWS::SSM::Paramter
+      Properties:
+        Name: /dancountability/${opt:stage, 'dev'}/settings/incoming-q-url
+        Description: the queue url for the app to poll
+        Type: String
+        Value: !Ref IncomingLogQueue
+        AllowedPattern: String
     s3WebSite:
       Type: AWS::S3::Bucket
       Properties:
