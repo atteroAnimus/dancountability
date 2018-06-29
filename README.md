@@ -1,4 +1,4 @@
-[![CircleCI](https://circleci.com/gh/soydantaylor/dancountability.svg?style=svg)](https://circleci.com/gh/soydantaylor/dancountability)
+[![CircleCI](https://circleci.com/gh/soydantaylor/dancountability.svg?style=svg&circle-token=deca461ece0df933a7846222a1775cec8be8bd39)](https://circleci.com/gh/soydantaylor/dancountability)
 
 #Dancountability
 This is a small prooof-of-concept for an app.  I'm going to use it to keep track of things that I do frequently, so I can see how often I do them over the course of the day, and see how that trendline appears from day to day.  Eventually there will be pretty graphs.
