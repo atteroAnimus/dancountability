@@ -48,7 +48,6 @@ namespace Api
 		    
 		    
 		    //checking the token validation
-		    Console.WriteLine($"{checkToken} against {token}");
 	        
 		    if (token != checkToken)
 		    {

@@ -19,6 +19,9 @@ provider:
         - "sqs:GetQueueAttributes"
         - "sqs:ReceiveMessage"
         - "sqs:DeleteMessage"
+        - "sqs:ListQueues"
+        - "sqs:ChangeMessageVisibility"
+        - "sqs:SendMessage"
       Resource: '*'
 package:
   artifact: ../artifacts/deploy-package.zip 
