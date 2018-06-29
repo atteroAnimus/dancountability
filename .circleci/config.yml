@@ -1,6 +1,6 @@
 version: 2
 jobs:
-  build:
+  build_dev:
     working_directory: ~/repo
     docker:
       - image: dantaylor/serverless-build-helper
