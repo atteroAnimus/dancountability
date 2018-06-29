@@ -59,7 +59,7 @@ workflows:
   version: 2
   build_and_test:
     jobs:
-      - build_dev
+      - build_dev:
           filters:
             branches:
               only:
