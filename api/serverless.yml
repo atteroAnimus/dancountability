@@ -16,6 +16,9 @@ provider:
         - "dynamodb:UpdateItem"
         - "dynamodb:DeleteItem"
         - "ssm:GetParametersByPath"
+        - "sqs:GetQueueAttributes"
+        - "sqs:ReceiveMessage"
+        - "sqs:DeleteMessage"
       Resource: '*'
 package:
   artifact: ../artifacts/deploy-package.zip 
