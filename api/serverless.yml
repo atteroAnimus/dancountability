@@ -34,8 +34,12 @@ functions:
       - http:
           path: log
           method: post
-resources:
-  Resources:
+  persist:
+    handler: CsharpHandlers::Api.Handler::Persist
+    events:
+      - sqs:
+          queueName: activity-log-queue-${opt:stage, 'dev'}
+s  Resources:
     incomingQueueParameter:
       Type: AWS::SSM::Parameter
       DependsOn: IncomingLogQueue

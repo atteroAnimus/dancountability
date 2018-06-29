@@ -59,11 +59,22 @@ workflows:
   version: 2
   build_and_test:
     jobs:
-      - build
+      - build_dev
+          filters:
+            branches:
+              only:
+                - develop
+                - /feature.*/
+                - /release.*/
       - test:
           requires:
-            - build
+            - build_dev
       - deploy:
           requires:
-            - build
+            - build_dev
             - test
+          filters:
+            branches:
+              only:
+                - develop
+                - /release.*/
