@@ -37,7 +37,8 @@ resources:
         Name: /dancountability/${opt:stage, 'dev'}/settings/incoming-q-url
         Description: the queue url for the app to poll
         Type: String
-        Value: Ref: IncomingLogQueue
+        Value: 
+          Ref: IncomingLogQueue
         AllowedPattern: String
     s3WebSite:
       Type: AWS::S3::Bucket
