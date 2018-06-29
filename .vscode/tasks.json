@@ -1,14 +1,16 @@
 {
-    "version": "2.0.0",
+    "version": "0.1.0",
+    "command": "dotnet",
+    "isShellCommand": true,
+    "args": [],
+    "options":  {
+        "cwd": "${workspaceRoot}/"
+    },
     "tasks": [
         {
-            "label": "build",
-            "command": "dotnet",
-            "type": "process",
-            "args": [
-                "build",
-                "${workspaceFolder}/api.Tests/api.Tests.csproj"
-            ],
+            "taskName": "build",
+            "args": [ ],
+            "isBuildCommand": true,
             "problemMatcher": "$msCompile"
         }
     ]

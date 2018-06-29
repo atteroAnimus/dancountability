@@ -18,12 +18,20 @@ namespace Core
 		public Queuable()
 		{
 			_config = Factory.Instance.Resolve<IAppConfig>();
+
+			if (_config == null)
+			{
+				throw new NullReferenceException($"cannot instantiate _config");
+			}
+			
 			_queueUrl = _config.GetParameter("incoming-q-url");
+			
 			var sqsConfig = new AmazonSQSConfig
 			{
 				ServiceURL = _queueUrl,
 				RegionEndpoint = _config.Region().ToEndpoint()
 			};
+			
 			_client = new AmazonSQSClient(sqsConfig);
 			
 

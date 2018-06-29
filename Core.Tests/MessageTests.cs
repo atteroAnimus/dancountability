@@ -63,11 +63,5 @@ namespace Core.Tests
 			messageHandler.PersistMessage();
 			dataMock.Verify(x => x.Save(It.IsAny<LogEntity>()), Times.Exactly(numberOfMessages));
 		}
-
-		[Fact]
-		public void TestCreateQueue()
-		{
-			var queue = new AmazonSQSClient(RegionEndpoint.USEast1);
-		}
 	}
 }

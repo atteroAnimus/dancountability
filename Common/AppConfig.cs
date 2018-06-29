@@ -11,30 +11,16 @@ namespace Common
 		private string _region => System.Environment.GetEnvironmentVariable("region") ?? "us-east-1";
 		public string Profile => System.Environment.GetEnvironmentVariable("profile") ?? "default";
 		public string ServiceName => System.Environment.GetEnvironmentVariable("service-name") ?? "dancountability";
-		private static string Environment => System.Environment.GetEnvironmentVariable("ENVIRONMENT_PATH");
+		private static string Environment => System.Environment.GetEnvironmentVariable("ENVIRONMENT_PATH") ?? "dev";
 		private string ParameterPath =>
 			System.Environment.GetEnvironmentVariable("parameter-path") ?? $"/dancountability/{Environment}/settings/";
 
-		private static volatile AppConfig _instance;
 		private static readonly object _syncRoot = new object();
 		private Dictionary<string, string> Parameters { get; set; }
 		
-		public static AppConfig Instance
-		{
-			get
-			{
-				if (_instance != null) return _instance;
-				lock (_syncRoot)
-				{
-					if (_instance != null) return _instance;
-					_instance = new AppConfig();
-				}
-
-				return _instance;
-			}
-		}
 		
-		private AppConfig()
+		
+		public AppConfig()
 		{
 			var parameters = new List<Parameter>();
 			Parameters = new Dictionary<string, string>();
@@ -84,7 +70,7 @@ namespace Common
 			}
 			catch (Exception)
 			{
-				throw new Exception($"{parameterName} not found in parameter dictionary check: {Instance.ParameterPath}{parameterName} is in SSM Parameter Store.");
+				throw new Exception($"{parameterName} not found in parameter dictionary check: {ParameterPath}{parameterName} is in SSM Parameter Store.");
 			}
 		}
 

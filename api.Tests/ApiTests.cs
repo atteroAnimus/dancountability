@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Net;
 using Amazon.Lambda.APIGatewayEvents;
+using Amazon.SQS.Model;
 using Api;
 using Common;
 using Core;
@@ -45,13 +46,6 @@ namespace api.Tests
 			helper.Verify(x => x.ExtractValues(It.IsAny<string>()), Times.Exactly(1));
 			Assert.Equal((int)HttpStatusCode.OK, response.StatusCode);
 			messageHandler.Verify(x => x.BufferRawMessage(It.IsAny<string>()), Times.Exactly(1));
-		}
-
-		[Fact]
-		public void TestResolveCore()
-		{
-			var messageHandler = Factory.Instance.Resolve<IMessageHandler>();
-			Assert.True(messageHandler is MessageHandler);
 		}
 	}
 }

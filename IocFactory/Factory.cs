@@ -48,7 +48,14 @@ namespace IocFactory
 
 		public T Resolve<T>()
 		{
-			return _provider.GetService<T>();
+			try
+			{
+				return _provider.GetService<T>();
+			}
+			catch (NullReferenceException nulm)
+			{
+				throw new NullReferenceException($"unable to resolve type {typeof(T)}");
+			}
 		}
 	}
 }
