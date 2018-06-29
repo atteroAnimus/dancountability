@@ -31,7 +31,7 @@ functions:
 resources:
   Resources:
     incomingQueueParameter:
-      Type: AWS::SSM::Paramter
+      Type: AWS::SSM::Parameter
       DependsOn: IncomingLogQueue
       Properties:
         Name: /dancountability/${opt:stage, 'dev'}/settings/incoming-q-url
