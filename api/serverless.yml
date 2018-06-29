@@ -39,7 +39,6 @@ resources:
         Type: String
         Value: 
           Ref: IncomingLogQueue
-        AllowedPattern: String
     s3WebSite:
       Type: AWS::S3::Bucket
       Properties:
