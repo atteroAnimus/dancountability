@@ -68,9 +68,9 @@ namespace Common
 			{
 				return Parameters[parameterName];
 			}
-			catch (Exception)
+			catch (Exception e)
 			{
-				throw new Exception($"{parameterName} not found in parameter dictionary check: {ParameterPath}{parameterName} is in SSM Parameter Store.");
+				throw new Exception($"{e.Message}\n{parameterName} not found in parameter dictionary check: {ParameterPath}{parameterName} is in SSM Parameter Store.");
 			}
 		}
 

@@ -17,7 +17,6 @@ namespace Core.Tests
 			Assert.NotNull(Factory.Instance.Resolve<IAppConfig>());
 			Assert.NotNull(thing);
 			Assert.NotNull(Factory.Instance.Resolve<IData>());
-			
 		}
 	}
 }
