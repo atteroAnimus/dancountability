@@ -1,8 +1,10 @@
 using System;
 using System.Diagnostics;
 using System.Linq;
+using System.Resources;
 using Amazon.Lambda.Core;
 using Amazon.Lambda.APIGatewayEvents;
+using Amazon.SQS;
 using Common;
 using Core;
 using IocFactory;
@@ -32,6 +34,11 @@ namespace Api
 		    _helper = helper;
 		    _logger = logger;
 		    _messagHandler = handler;
+	    }
+
+	    public APIGatewayProxyResponse Persist(AmazonSQSRequest request, ILambdaContext context)
+	    {
+		    return null;
 	    }
 
 	    public APIGatewayProxyResponse Log(APIGatewayProxyRequest request, ILambdaContext context)

@@ -39,7 +39,12 @@ functions:
     events:
       - sqs:
           queueName: activity-log-queue-${opt:stage, 'dev'}
-s  Resources:
+          arn:
+            Fn::GetAtt:
+              - IncomingLogQueue
+              - Arn
+              
+  Resources:
     incomingQueueParameter:
       Type: AWS::SSM::Parameter
       DependsOn: IncomingLogQueue
