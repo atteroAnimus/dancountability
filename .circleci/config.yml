@@ -11,7 +11,7 @@ jobs:
       - run:
           name: restore
           command: |
-            echo "current branch is $CIRCLE_BRANCH"
+            echo "current branch is ${CIRCLE_BRANCH}"
             dotnet restore
       - run:
           name: Run build scripts
