@@ -54,10 +54,10 @@ jobs:
       - run:
           name: deploy serverless code
           command: |
-            
+            STAGE=`echo ${CIRCLE_BRANCH} | sed 's/\//-/g'`
             sls config credentials --provider aws --key $aws_access_key_id --secret $aws_secret_access_key
             cd api/
-            sls deploy --v
+            sls deploy --v --stage $STAGE
 workflows:
   version: 2
   build_and_test:
@@ -76,8 +76,3 @@ workflows:
           requires:
             - build_dev
             - test
-          filters:
-            branches:
-              only:
-                - develop
-                - /release.*/
