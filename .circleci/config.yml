@@ -10,7 +10,9 @@ jobs:
           at: .
       - run:
           name: restore
-          command: dotnet restore
+          command: |
+            echo "current branch is $CIRCLE_BRANCH"
+            dotnet restore
       - run:
           name: Run build scripts
           command: | 
@@ -52,6 +54,7 @@ jobs:
       - run:
           name: deploy serverless code
           command: |
+            
             sls config credentials --provider aws --key $aws_access_key_id --secret $aws_secret_access_key
             cd api/
             sls deploy --v
