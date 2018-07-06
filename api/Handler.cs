@@ -39,11 +39,17 @@ namespace Api
 		    _messagHandler = handler;
 	    }
 
-	    public void Persist(SqsEvent sqsEvent, ILambdaContext context)
+	    public void Persist(dynamic sqsEvent, ILambdaContext context)
 	    {
 		    try
 		    {
-			    var records = sqsEvent.Records.Select(x => JsonConvert.DeserializeObject<InsertionModel>(x.Body));
+			    var records = new List<string>();
+
+			    foreach (var record in sqsEvent.Records)
+			    {
+				    records.Add(record.Body);
+			    }
+
 			    Console.WriteLine($"attempting to persist ${records?.Count()} messages");
 			    _messagHandler.PersistMessage(records);
 		    }
