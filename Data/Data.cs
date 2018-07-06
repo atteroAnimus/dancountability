@@ -26,6 +26,7 @@ namespace Data
 
 			try
 			{
+				Console.WriteLine($"trying to log ${model.ActivityId}");
 				using (var client = new AmazonDynamoDBClient())
 				{
 					var document = new Document
@@ -65,6 +66,7 @@ namespace Data
 
 					foreach (var document in documents)
 					{
+						Console.WriteLine($"trying to log ${document["ActivityText"]}");
 						var putResult = logs.PutItemAsync(document);
 					}
 
