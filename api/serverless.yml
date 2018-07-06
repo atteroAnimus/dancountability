@@ -58,14 +58,6 @@ resources:
         Type: String
         Value: 
           Ref: IncomingLogQueue
-    slackVerificationTokenParameter:
-      Type: AWS::SSM::Parameter
-      DependsOn: IncomingLogQueue
-      Properties:
-        Name: /dancountability/${opt:stage, 'develop'}/settings/al-slack-verification-token
-        Description: verify that the message came from slack
-        Type: SecureString
-        Value: ${ssm:/dancountability/default/al-slack-verification-token}
     loggingDb:
       Type: AWS::DynamoDB::Table
       Properties:
