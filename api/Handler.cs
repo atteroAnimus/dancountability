@@ -40,7 +40,8 @@ namespace Api
 
 	    public APIGatewayProxyResponse Persist(List<Record> records, ILambdaContext context)
 	    {
-		    Console.WriteLine(JsonConvert.SerializeObject(records));
+		    //Console.WriteLine(JsonConvert.SerializeObject(records));
+		    Console.WriteLine($"got {records?.Count ?? 0} records");
 		    return null;
 	    }
 
