@@ -48,6 +48,7 @@ namespace Api
 			    Console.WriteLine(JsonConvert.SerializeObject(sqsEvent));
 			    foreach (var record in sqsEvent.Records)
 			    {
+				    Console.WriteLine(record.body);
 				    records.Add(JsonConvert.DeserializeObject<InsertionModel>(record.body));
 			    }
 
