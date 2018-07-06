@@ -73,7 +73,7 @@ jobs:
             STAGE=`echo ${CIRCLE_BRANCH} | sed 's/\//-/g'`
             sls config credentials --provider aws --key $aws_access_key_id --secret $aws_secret_access_key
             cd api/
-            sls remove --v --stage $STAGE
+            #sls remove --v --stage $STAGE
 workflows:
   version: 2
   build_and_test:
@@ -108,6 +108,10 @@ workflows:
                 - /finish.*/
       - destroy:
           filters:
+            branches:
+              ignore:
+                - develop
+                - /release.*/
             tags:
               only:
                 - /destroy/
