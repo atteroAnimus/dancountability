@@ -69,22 +69,5 @@ namespace Core.Tests
 			messageHandler.PersistMessage(arg);
 			dataMock.Verify(x => x.Save(It.IsAny<IEnumerable<LogEntity>>()), Times.Exactly(numberOfMessages));
 		}
-
-		[Fact]
-		public void TestDeserialize()
-		{
-			using (var reader = new StreamReader("/Users/dantaylor/Desktop/stuff.json"))
-			{
-				var contents = reader.ReadToEnd();
-				var dyn = JsonConvert.DeserializeObject<dynamic>(contents);
-				Assert.NotNull(dyn);
-				var insertionModel = dyn.Records[0].body;
-				Assert.NotNull(insertionModel);
-				_output.WriteLine(insertionModel.ToString());
-				var strong = JsonConvert.DeserializeObject(dyn.Records[0].body.ToString());
-				Assert.NotNull(strong);
-			}
-
-		}
 	}
 }
