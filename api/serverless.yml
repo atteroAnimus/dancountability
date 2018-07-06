@@ -30,12 +30,14 @@ package:
 functions:
   log:
     handler: CsharpHandlers::Api.Handler::Log
+    environment: ${opt:stage, 'develop'}
     events:
       - http:
           path: log
           method: post
   persist:
     handler: CsharpHandlers::Api.Handler::Persist
+    environment: ${opt:stage, 'develop'}
     events:
       - sqs:
           queueName: activity-log-queue-${opt:stage, 'develop'}
