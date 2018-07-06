@@ -44,7 +44,7 @@ namespace Api
 		    try
 		    {
 			    var records = sqsEvent.Records.Select(x => JsonConvert.DeserializeObject<InsertionModel>(x.Body));
-			    
+			    Console.WriteLine($"attempting to persist ${records?.Count()} messages");
 			    _messagHandler.PersistMessage(records);
 		    }
 		    catch (Exception e)
