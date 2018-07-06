@@ -1,10 +1,12 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 using Amazon;
 using Amazon.Runtime.Internal.Util;
 using Amazon.SQS;
 using Core.Models;
 using Data;
+using Microsoft.Extensions.DependencyModel;
 using Moq;
 using Newtonsoft.Json;
 using Xunit;
@@ -71,10 +73,18 @@ namespace Core.Tests
 		[Fact]
 		public void TestDeserialize()
 		{
-			const string input = "{\"ActivityType\":0,\"InsertionDate\":\"2018-07-06 06:55:40\"}";
-			var insertionModel = JsonConvert.DeserializeObject<InsertionModel>(input);
-			Assert.NotNull(insertionModel);
-			Assert.Equal(ActivityType.Unknown, insertionModel.ActivityType);
+			using (var reader = new StreamReader("/Users/dantaylor/Desktop/stuff.json"))
+			{
+				var contents = reader.ReadToEnd();
+				var dyn = JsonConvert.DeserializeObject<dynamic>(contents);
+				Assert.NotNull(dyn);
+				var insertionModel = dyn.Records[0].body;
+				Assert.NotNull(insertionModel);
+				_output.WriteLine(insertionModel.ToString());
+				var strong = JsonConvert.DeserializeObject(dyn.Records[0].body.ToString());
+				Assert.NotNull(strong);
+			}
+
 		}
 	}
 }
