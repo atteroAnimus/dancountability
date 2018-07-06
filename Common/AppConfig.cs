@@ -11,7 +11,7 @@ namespace Common
 		private string _region => System.Environment.GetEnvironmentVariable("region") ?? "us-east-1";
 		public string Profile => System.Environment.GetEnvironmentVariable("profile") ?? "default";
 		public string ServiceName => System.Environment.GetEnvironmentVariable("service-name") ?? "dancountability";
-		private static string Environment => System.Environment.GetEnvironmentVariable("ENVIRONMENT_PATH") ?? "dev";
+		private static string Environment => System.Environment.GetEnvironmentVariable("ENVIRONMENT_PATH") ?? "develop";
 		private string ParameterPath =>
 			System.Environment.GetEnvironmentVariable("parameter-path") ?? $"/dancountability/{Environment}/settings/";
 
