@@ -59,6 +59,9 @@ namespace Data
 						["ActivityText"] = model.ActivityId
 					})
 					.ToList();
+				
+				Console.WriteLine($"trying to log ${documents.Count} documents");
+				
 
 				using (var client = new AmazonDynamoDBClient())
 				{
@@ -66,8 +69,7 @@ namespace Data
 
 					foreach (var document in documents)
 					{
-						Console.WriteLine($"trying to log ${document["ActivityText"]}");
-						var putResult = logs.PutItemAsync(document);
+						var putResult = logs.PutItemAsync(document).Result;
 					}
 
 				}
