@@ -1,5 +1,7 @@
 using System;
+using System.Collections.Generic;
 using Amazon;
+using Amazon.Runtime.Internal.Util;
 using Amazon.SQS;
 using Core.Models;
 using Data;
@@ -36,15 +38,12 @@ namespace Core.Tests
 
 		[Theory]
 		[InlineData(1)]
-		[InlineData(2)]
-		[InlineData(10)]
-		[InlineData(100)]
 		public void TestPersistMessage(int numberOfMessages)
 		{
 			var numMessagesInQueue = numberOfMessages;
 			var dataMock = new Mock<IData>();
-			dataMock.Setup(x => x.Save(It.IsAny<LogEntity>()))
-				.Callback<LogEntity>(x => _output.WriteLine($"successfully wrote {x.ActivityId} to database"))
+			dataMock.Setup(x => x.Save(It.IsAny<IEnumerable<LogEntity>>()))
+				.Callback<IEnumerable<LogEntity>>(x => _output.WriteLine("wrote stuff to database"))
 				.Verifiable();
 			var queueMock = new Mock<IQueuable>();
 			queueMock.Setup(x => x.Push(It.IsAny<InsertionModel>()))
@@ -60,8 +59,12 @@ namespace Core.Tests
 				});
 
 			var messageHandler = new MessageHandler(queueMock.Object, dataMock.Object);
-			messageHandler.PersistMessage();
-			dataMock.Verify(x => x.Save(It.IsAny<LogEntity>()), Times.Exactly(numberOfMessages));
+			var arg = new List<InsertionModel>
+			{
+				new InsertionModel(ActivityType.P, DateTime.Now)
+			};
+			messageHandler.PersistMessage(arg);
+			dataMock.Verify(x => x.Save(It.IsAny<IEnumerable<LogEntity>>()), Times.Exactly(numberOfMessages));
 		}
 	}
 }

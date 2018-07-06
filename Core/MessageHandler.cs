@@ -38,9 +38,9 @@ namespace Core
 			}
 		}
 
-		public void PersistMessage(InsertionModel model)
+		public void PersistMessage(IEnumerable<InsertionModel> models)
 		{
-			_data.Save(model.ToEntity());
+			_data.Save(models.ToEntities());
 		}
 
 		private static ActivityType Convert(string val)

@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using Amazon.DynamoDBv2;
 using Amazon.DynamoDBv2.DocumentModel;
 
@@ -21,6 +23,39 @@ namespace Data
 					};
 					var logs = Table.LoadTable(client, "ActivityLog");
 					var putResult = logs.PutItemAsync(document).Result;
+				}
+			}
+			catch (Exception e)
+			{
+				Console.WriteLine(e);
+				throw;
+			}
+		}
+
+		public void Save(IEnumerable<LogEntity> models)
+		{
+			try
+			{
+				//build the documents
+
+				var documents = models.Select(model => new Document
+					{
+						["Id"] = Guid.NewGuid().ToString(),
+						["InsertDate"] = model.DateString,
+						["ActivityText"] = model.ActivityId
+					})
+					.ToList();
+
+				using (var client = new AmazonDynamoDBClient())
+				{
+					
+					var logs = Table.LoadTable(client, "ActivityLog");
+
+					foreach (var document in documents)
+					{
+						var putResult = logs.PutItemAsync(document);
+					}
+
 				}
 			}
 			catch (Exception e)

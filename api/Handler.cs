@@ -43,10 +43,9 @@ namespace Api
 	    {
 		    try
 		    {
-			    foreach (var record in sqsEvent.Records)
-			    {
-				    _messagHandler.PersistMessage(JsonConvert.DeserializeObject<InsertionModel>(record.Body));
-			    }
+			    var records = sqsEvent.Records.Select(x => JsonConvert.DeserializeObject<InsertionModel>(x.Body));
+			    
+			    _messagHandler.PersistMessage(records);
 		    }
 		    catch (Exception e)
 		    {

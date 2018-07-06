@@ -1,11 +1,13 @@
-﻿using Core.Models;
+﻿using System.Collections;
+using System.Collections.Generic;
+using Core.Models;
 
 namespace Core
 {
 	public interface IMessageHandler
 	{
 		void BufferRawMessage(string rawLog);
-		void PersistMessage(InsertionModel model);
+		void PersistMessage(IEnumerable<InsertionModel> models);
 
 	}
 }
