@@ -2,7 +2,7 @@ service: api
 
 provider:
   name: aws
-  stage: ${opt:stage, 'dev'}
+  stage: ${opt:stage, 'develop'}
   environment:
     ENVIRONMENT_PATH: ${self:provider.stage}
   runtime: dotnetcore2.0
@@ -38,7 +38,7 @@ functions:
     handler: CsharpHandlers::Api.Handler::Persist
     events:
       - sqs:
-          queueName: activity-log-queue-${opt:stage, 'dev'}
+          queueName: activity-log-queue-${opt:stage, 'develop'}
           arn:
             Fn::GetAtt:
               - IncomingLogQueue
@@ -48,7 +48,7 @@ Resources:
     Type: AWS::SSM::Parameter
     DependsOn: IncomingLogQueue
     Properties:
-      Name: /dancountability/${opt:stage, 'dev'}/settings/incoming-q-url
+      Name: /dancountability/${opt:stage, 'develop'}/settings/incoming-q-url
       Description: the queue url for the app to poll
       Type: String
       Value: 
@@ -79,7 +79,7 @@ Resources:
       ProvisionedThroughput:
         ReadCapacityUnits: 1
         WriteCapacityUnits: 1
-      TableName: ActivityLog
+      TableName: ActivityLog-${opt:stage, 'develop'}
       GlobalSecondaryIndexes:
         - IndexName: dateIndex
           KeySchema:
@@ -97,6 +97,6 @@ Resources:
   IncomingLogQueue:
     Type: AWS::SQS::Queue
     Properties:
-      QueueName: activity-log-queue-${opt:stage, 'dev'}
+      QueueName: activity-log-queue-${opt:stage, 'develop'}
       #different queues for different environments
           
