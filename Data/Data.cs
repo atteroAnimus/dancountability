@@ -3,11 +3,24 @@ using System.Collections.Generic;
 using System.Linq;
 using Amazon.DynamoDBv2;
 using Amazon.DynamoDBv2.DocumentModel;
+using Common;
+using IocFactory;
 
 namespace Data
 {
 	public class Data : IData
 	{
+		private IAppConfig _config;
+
+		public Data()
+		{
+			_config = Factory.Instance.Resolve<IAppConfig>();
+		}
+
+		public Data(IAppConfig config)
+		{
+			_config = config;
+		}
 		public void Save(LogEntity model)
 		{
 
@@ -21,7 +34,7 @@ namespace Data
 						["InsertDate"] = model.DateString,
 						["ActivityText"] = model.ActivityId
 					};
-					var logs = Table.LoadTable(client, "ActivityLog");
+					var logs = Table.LoadTable(client, $"ActivityLog-{_config.GetEnvironment()}");
 					var putResult = logs.PutItemAsync(document).Result;
 				}
 			}
@@ -48,8 +61,7 @@ namespace Data
 
 				using (var client = new AmazonDynamoDBClient())
 				{
-					
-					var logs = Table.LoadTable(client, "ActivityLog");
+					var logs = Table.LoadTable(client, $"ActivityLog-{_config.GetEnvironment()}");
 
 					foreach (var document in documents)
 					{

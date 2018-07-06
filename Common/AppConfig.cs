@@ -74,6 +74,10 @@ namespace Common
 			}
 		}
 
+		public string GetEnvironment()
+		{
+			return Environment;
+		}
 		public string Region()
 		{
 			return _region;

@@ -52,7 +52,7 @@ namespace Api
 				    records.Add(JsonConvert.DeserializeObject<InsertionModel>(record.body.ToString()));
 			    }
 
-			    Console.WriteLine($"attempting to persist ${records?.Count()} messages");
+			    Console.WriteLine($"attempting to persist {records?.Count()} messages");
 			    _messagHandler.PersistMessage(records);
 		    }
 		    catch (Exception e)
