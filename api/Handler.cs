@@ -49,7 +49,7 @@ namespace Api
 			    foreach (var record in sqsEvent.Records)
 			    {
 				    Console.WriteLine(record.body);
-				    records.Add(JsonConvert.DeserializeObject<InsertionModel>(record.body));
+				    records.Add(JsonConvert.DeserializeObject<InsertionModel>(record.body.ToString()));
 			    }
 
 			    Console.WriteLine($"attempting to persist ${records?.Count()} messages");

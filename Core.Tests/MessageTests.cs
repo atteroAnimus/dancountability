@@ -6,6 +6,7 @@ using Amazon.SQS;
 using Core.Models;
 using Data;
 using Moq;
+using Newtonsoft.Json;
 using Xunit;
 using Xunit.Abstractions;
 
@@ -65,6 +66,15 @@ namespace Core.Tests
 			};
 			messageHandler.PersistMessage(arg);
 			dataMock.Verify(x => x.Save(It.IsAny<IEnumerable<LogEntity>>()), Times.Exactly(numberOfMessages));
+		}
+
+		[Fact]
+		public void TestDeserialize()
+		{
+			const string input = "{\"ActivityType\":0,\"InsertionDate\":\"2018-07-06 06:55:40\"}";
+			var insertionModel = JsonConvert.DeserializeObject<InsertionModel>(input);
+			Assert.NotNull(insertionModel);
+			Assert.Equal(ActivityType.Unknown, insertionModel.ActivityType);
 		}
 	}
 }
