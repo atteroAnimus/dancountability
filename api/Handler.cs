@@ -43,11 +43,11 @@ namespace Api
 	    {
 		    try
 		    {
-			    var records = new List<string>();
+			    var records = new List<InsertionModel>();
 
 			    foreach (var record in sqsEvent.Records)
 			    {
-				    records.Add(record.Body);
+				    records.Add(JsonConvert.DeserializeObject<InsertionModel>(record.Body));
 			    }
 
 			    Console.WriteLine($"attempting to persist ${records?.Count()} messages");
