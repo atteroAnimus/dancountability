@@ -54,14 +54,6 @@ resources:
         Type: String
         Value: 
           Ref: IncomingLogQueue
-    s3WebSite:
-      Type: AWS::S3::Bucket
-      Properties:
-        BucketName: dancountability
-        WebsiteConfiguration: 
-          ErrorDocument: index.html
-          IndexDocument: error.html
-        AccessControl: PublicRead
     loggingDb:
       Type: AWS::DynamoDB::Table
       Properties:
