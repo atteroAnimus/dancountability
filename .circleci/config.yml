@@ -11,6 +11,7 @@ jobs:
       - run:
           name: restore
           command: |
+            echo "tag is ${CIRCLE_TAG}"
             echo "current branch is ${CIRCLE_BRANCH}"
             dotnet restore
       - run:
@@ -68,6 +69,7 @@ jobs:
       - run:
           name: destroy the feature artifacts
           command: |
+            echo "tag is ${CIRCLE_TAG}"
             STAGE=`echo ${CIRCLE_BRANCH} | sed 's/\//-/g'`
             sls config credentials --provider aws --key $aws_access_key_id --secret $aws_secret_access_key
             cd api/
