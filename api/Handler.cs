@@ -46,13 +46,13 @@ namespace Api
 			    var records = new List<InsertionModel>();
 
 			    Console.WriteLine(JsonConvert.SerializeObject(sqsEvent));
-//			    foreach (var record in sqsEvent.Records)
-//			    {
-//				    records.Add(JsonConvert.DeserializeObject<InsertionModel>(record.Body));
-//			    }
-//
-//			    Console.WriteLine($"attempting to persist ${records?.Count()} messages");
-//			    _messagHandler.PersistMessage(records);
+			    foreach (var record in sqsEvent.Records)
+			    {
+				    records.Add(JsonConvert.DeserializeObject<InsertionModel>(record.body));
+			    }
+
+			    Console.WriteLine($"attempting to persist ${records?.Count()} messages");
+			    _messagHandler.PersistMessage(records);
 		    }
 		    catch (Exception e)
 		    {
