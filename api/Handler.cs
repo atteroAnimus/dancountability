@@ -38,10 +38,9 @@ namespace Api
 		    _messagHandler = handler;
 	    }
 
-	    public APIGatewayProxyResponse Persist(List<Record> records, ILambdaContext context)
+	    public APIGatewayProxyResponse Persist(dynamic records, ILambdaContext context)
 	    {
-		    //Console.WriteLine(JsonConvert.SerializeObject(records));
-		    Console.WriteLine($"got {records?.Count ?? 0} records");
+		    Console.WriteLine(JsonConvert.SerializeObject(records));
 		    return null;
 	    }
 
