@@ -2,7 +2,7 @@ service: api
 
 provider:
   name: aws
-  stage: ${opt:stage, 'dev'}
+  stage: ${opt:stage, 'develop'}
   environment:
     ENVIRONMENT_PATH: ${self:provider.stage}
   runtime: dotnetcore2.0
@@ -34,61 +34,69 @@ functions:
       - http:
           path: log
           method: post
-resources:
-  Resources:
-    incomingQueueParameter:
-      Type: AWS::SSM::Parameter
-      DependsOn: IncomingLogQueue
-      Properties:
-        Name: /dancountability/${opt:stage, 'dev'}/settings/incoming-q-url
-        Description: the queue url for the app to poll
-        Type: String
-        Value: 
-          Ref: IncomingLogQueue
-    s3WebSite:
-      Type: AWS::S3::Bucket
-      Properties:
-        BucketName: dancountability
-        WebsiteConfiguration: 
-          ErrorDocument: index.html
-          IndexDocument: error.html
-        AccessControl: PublicRead
-    loggingDb:
-      Type: AWS::DynamoDB::Table
-      Properties:
-        AttributeDefinitions:
-          - AttributeName: Id
-            AttributeType: S
-          - AttributeName: InsertDate
-            AttributeType: S
-          - AttributeName: Text
-            AttributeType: S
-        KeySchema:
-          - AttributeName: Id
-            KeyType: HASH
-          - AttributeName: InsertDate
-            KeyType: RANGE
-        ProvisionedThroughput:
-          ReadCapacityUnits: 1
-          WriteCapacityUnits: 1
-        TableName: ActivityLog
-        GlobalSecondaryIndexes:
-          - IndexName: dateIndex
-            KeySchema:
-              - AttributeName: Text
-                KeyType: HASH
-              - AttributeName: InsertDate
-                KeyType: RANGE
-            Projection:
-              NonKeyAttributes:
-                - Id
-              ProjectionType: INCLUDE
-            ProvisionedThroughput:
-              ReadCapacityUnits: 1
-              WriteCapacityUnits: 1
-    IncomingLogQueue:
-      Type: AWS::SQS::Queue
-      Properties:
-        QueueName: activity-log-queue-${opt:stage, 'dev'}
-        #different queues for different environments
+  persist:
+    handler: CsharpHandlers::Api.Handler::Persist
+    events:
+      - sqs:
+          queueName: activity-log-queue-${opt:stage, 'develop'}
+          arn:
+            Fn::GetAtt:
+              - IncomingLogQueue
+              - Arn
+Resources:
+  incomingQueueParameter:
+    Type: AWS::SSM::Parameter
+    DependsOn: IncomingLogQueue
+    Properties:
+      Name: /dancountability/${opt:stage, 'develop'}/settings/incoming-q-url
+      Description: the queue url for the app to poll
+      Type: String
+      Value: 
+        Ref: IncomingLogQueue
+  s3WebSite:
+    Type: AWS::S3::Bucket
+    Properties:
+      BucketName: dancountability
+      WebsiteConfiguration: 
+        ErrorDocument: index.html
+        IndexDocument: error.html
+      AccessControl: PublicRead
+  loggingDb:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      AttributeDefinitions:
+        - AttributeName: Id
+          AttributeType: S
+        - AttributeName: InsertDate
+          AttributeType: S
+        - AttributeName: Text
+          AttributeType: S
+      KeySchema:
+        - AttributeName: Id
+          KeyType: HASH
+        - AttributeName: InsertDate
+          KeyType: RANGE
+      ProvisionedThroughput:
+        ReadCapacityUnits: 1
+        WriteCapacityUnits: 1
+      TableName: ActivityLog-${opt:stage, 'develop'}
+      GlobalSecondaryIndexes:
+        - IndexName: dateIndex
+          KeySchema:
+            - AttributeName: Text
+              KeyType: HASH
+            - AttributeName: InsertDate
+              KeyType: RANGE
+          Projection:
+            NonKeyAttributes:
+              - Id
+            ProjectionType: INCLUDE
+          ProvisionedThroughput:
+            ReadCapacityUnits: 1
+            WriteCapacityUnits: 1
+  IncomingLogQueue:
+    Type: AWS::SQS::Queue
+    Properties:
+      QueueName: activity-log-queue-${opt:stage, 'develop'}
+      #different queues for different environments
           

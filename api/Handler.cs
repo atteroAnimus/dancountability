@@ -1,12 +1,16 @@
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Resources;
 using Amazon.Lambda.Core;
 using Amazon.Lambda.APIGatewayEvents;
+using Amazon.SQS;
 using Common;
 using Core;
 using IocFactory;
 using Logging;
+using Newtonsoft.Json;
 
 [assembly: LambdaSerializer(typeof(Amazon.Lambda.Serialization.Json.JsonSerializer))]
 
@@ -32,6 +36,12 @@ namespace Api
 		    _helper = helper;
 		    _logger = logger;
 		    _messagHandler = handler;
+	    }
+
+	    public APIGatewayProxyResponse Persist(List<Record> records, ILambdaContext context)
+	    {
+		    Console.WriteLine(JsonConvert.SerializeObject(records));
+		    return null;
 	    }
 
 	    public APIGatewayProxyResponse Log(APIGatewayProxyRequest request, ILambdaContext context)
