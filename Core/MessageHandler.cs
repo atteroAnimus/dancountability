@@ -38,14 +38,9 @@ namespace Core
 			}
 		}
 
-		public void PersistMessage()
+		public void PersistMessage(InsertionModel model)
 		{
-			var message = _queue.Pop<InsertionModel>();
-			while (message != null)
-			{
-				_data.Save(message.ToEntity());
-				message = _queue.Pop<InsertionModel>();
-			}
+			_data.Save(model.ToEntity());
 		}
 
 		private static ActivityType Convert(string val)

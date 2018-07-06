@@ -8,6 +8,7 @@ using Amazon.Lambda.APIGatewayEvents;
 using Amazon.SQS;
 using Common;
 using Core;
+using Core.Models;
 using IocFactory;
 using Logging;
 using Newtonsoft.Json;
@@ -38,10 +39,20 @@ namespace Api
 		    _messagHandler = handler;
 	    }
 
-	    public APIGatewayProxyResponse Persist(dynamic records, ILambdaContext context)
+	    public void Persist(SqsEvent sqsEvent, ILambdaContext context)
 	    {
-		    Console.WriteLine(JsonConvert.SerializeObject(records));
-		    return null;
+		    try
+		    {
+			    foreach (var record in sqsEvent.Records)
+			    {
+				    _messagHandler.PersistMessage(JsonConvert.DeserializeObject<InsertionModel>(record.Body));
+			    }
+		    }
+		    catch (Exception e)
+		    {
+			    Console.WriteLine(e);
+			    throw;
+		    }
 	    }
 
 	    public APIGatewayProxyResponse Log(APIGatewayProxyRequest request, ILambdaContext context)
