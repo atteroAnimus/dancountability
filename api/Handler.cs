@@ -1,12 +1,17 @@
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Resources;
 using Amazon.Lambda.Core;
 using Amazon.Lambda.APIGatewayEvents;
+using Amazon.SQS;
 using Common;
 using Core;
+using Core.Models;
 using IocFactory;
 using Logging;
+using Newtonsoft.Json;
 
 [assembly: LambdaSerializer(typeof(Amazon.Lambda.Serialization.Json.JsonSerializer))]
 
@@ -32,6 +37,29 @@ namespace Api
 		    _helper = helper;
 		    _logger = logger;
 		    _messagHandler = handler;
+	    }
+
+	    public void Persist(dynamic sqsEvent, ILambdaContext context)
+	    {
+		    try
+		    {
+			    var records = new List<InsertionModel>();
+
+			    Console.WriteLine(JsonConvert.SerializeObject(sqsEvent));
+			    foreach (var record in sqsEvent.Records)
+			    {
+				    Console.WriteLine(record.body);
+				    records.Add(JsonConvert.DeserializeObject<InsertionModel>(record.body.ToString()));
+			    }
+
+			    Console.WriteLine($"attempting to persist {records?.Count()} messages");
+			    _messagHandler.PersistMessage(records);
+		    }
+		    catch (Exception e)
+		    {
+			    Console.WriteLine(e);
+			    throw;
+		    }
 	    }
 
 	    public APIGatewayProxyResponse Log(APIGatewayProxyRequest request, ILambdaContext context)

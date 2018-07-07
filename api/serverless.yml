@@ -2,7 +2,7 @@ service: api
 
 provider:
   name: aws
-  stage: ${opt:stage, 'dev'}
+  stage: ${opt:stage, 'develop'}
   environment:
     ENVIRONMENT_PATH: ${self:provider.stage}
   runtime: dotnetcore2.0
@@ -30,29 +30,34 @@ package:
 functions:
   log:
     handler: CsharpHandlers::Api.Handler::Log
+    environment: 
+      ENVIRONMENT_PATH: ${opt:stage, 'develop'}
     events:
       - http:
           path: log
           method: post
+  persist:
+    handler: CsharpHandlers::Api.Handler::Persist
+    environment: 
+      ENVIRONMENT_PATH: ${opt:stage, 'develop'}
+    events:
+      - sqs:
+          queueName: activity-log-queue-${opt:stage, 'develop'}
+          arn:
+            Fn::GetAtt:
+              - IncomingLogQueue
+              - Arn
 resources:
   Resources:
     incomingQueueParameter:
       Type: AWS::SSM::Parameter
       DependsOn: IncomingLogQueue
       Properties:
-        Name: /dancountability/${opt:stage, 'dev'}/settings/incoming-q-url
+        Name: /dancountability/${opt:stage, 'develop'}/settings/incoming-q-url
         Description: the queue url for the app to poll
         Type: String
         Value: 
           Ref: IncomingLogQueue
-    s3WebSite:
-      Type: AWS::S3::Bucket
-      Properties:
-        BucketName: dancountability
-        WebsiteConfiguration: 
-          ErrorDocument: index.html
-          IndexDocument: error.html
-        AccessControl: PublicRead
     loggingDb:
       Type: AWS::DynamoDB::Table
       Properties:
@@ -71,7 +76,7 @@ resources:
         ProvisionedThroughput:
           ReadCapacityUnits: 1
           WriteCapacityUnits: 1
-        TableName: ActivityLog
+        TableName: ActivityLog-${opt:stage, 'develop'}
         GlobalSecondaryIndexes:
           - IndexName: dateIndex
             KeySchema:
@@ -89,6 +94,6 @@ resources:
     IncomingLogQueue:
       Type: AWS::SQS::Queue
       Properties:
-        QueueName: activity-log-queue-${opt:stage, 'dev'}
+        QueueName: activity-log-queue-${opt:stage, 'develop'}
         #different queues for different environments
           

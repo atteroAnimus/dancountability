@@ -1,6 +1,6 @@
 version: 2
 jobs:
-  build:
+  build_dev:
     working_directory: ~/repo
     docker:
       - image: dantaylor/serverless-build-helper
@@ -10,7 +10,8 @@ jobs:
           at: .
       - run:
           name: restore
-          command: dotnet restore
+          command: |
+            dotnet restore
       - run:
           name: Run build scripts
           command: | 
@@ -52,18 +53,59 @@ jobs:
       - run:
           name: deploy serverless code
           command: |
+            STAGE=`echo ${CIRCLE_BRANCH} | sed 's/\//-/g'`
             sls config credentials --provider aws --key $aws_access_key_id --secret $aws_secret_access_key
             cd api/
-            sls deploy --v
+            sls deploy --v --stage $STAGE
+#  destroy:
+#    docker:
+#      - image: dantaylor/serverless-build-helper
+#    steps:
+#      - checkout
+#      - attach_workspace:
+#          at: .
+#      - run:
+#          name: destroy the feature artifacts
+#          command: |
+#            STAGE=`echo ${CIRCLE_BRANCH} | sed 's/\//-/g'`
+#            sls config credentials --provider aws --key $aws_access_key_id --secret $aws_secret_access_key
+#            cd api/
+#            #sls remove --v --stage $STAGE
 workflows:
   version: 2
   build_and_test:
     jobs:
-      - build
+      - build_dev:
+          filters:
+            branches:
+              only:
+                - develop
+                - /feature.*/
+                - /release.*/
+            tags:
+              ignore: 
+                - /destroy/
+                - /finish.*/
       - test:
           requires:
-            - build
+            - build_dev
+          filters:
+            tags:
+              ignore:
+                - /destroy/
+                - /finish.*/
       - deploy:
           requires:
-            - build
+            - build_dev
             - test
+          filters:
+            tags:
+              ignore:
+                - /destroy/
+                - /finish.*/
+#      - destroy:
+#          filters:
+#            tags:
+#              only:
+#                - /destroy/
+#                - /finish.*/

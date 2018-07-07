@@ -13,7 +13,7 @@ namespace Core
 			return new LogEntity
 			{
 				ActivityId = (int)model.ActivityType,
-				DateString = model.InsertionDate
+				DateString = model.OutputDate()
 			};
 		}
 

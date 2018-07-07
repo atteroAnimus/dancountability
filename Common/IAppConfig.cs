@@ -6,5 +6,6 @@ namespace Common
 	{
 		string GetParameter(string parameterName);
 		string Region();
+		string GetEnvironment();
 	}
 }

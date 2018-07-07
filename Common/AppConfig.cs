@@ -11,7 +11,7 @@ namespace Common
 		private string _region => System.Environment.GetEnvironmentVariable("region") ?? "us-east-1";
 		public string Profile => System.Environment.GetEnvironmentVariable("profile") ?? "default";
 		public string ServiceName => System.Environment.GetEnvironmentVariable("service-name") ?? "dancountability";
-		private static string Environment => System.Environment.GetEnvironmentVariable("ENVIRONMENT_PATH") ?? "dev";
+		private static string Environment => System.Environment.GetEnvironmentVariable("ENVIRONMENT_PATH") ?? "develop";
 		private string ParameterPath =>
 			System.Environment.GetEnvironmentVariable("parameter-path") ?? $"/dancountability/{Environment}/settings/";
 
@@ -68,12 +68,16 @@ namespace Common
 			{
 				return Parameters[parameterName];
 			}
-			catch (Exception)
+			catch (Exception e)
 			{
-				throw new Exception($"{parameterName} not found in parameter dictionary check: {ParameterPath}{parameterName} is in SSM Parameter Store.");
+				throw new Exception($"{e.Message}\n{parameterName} not found in parameter dictionary check: {ParameterPath}{parameterName} is in SSM Parameter Store.");
 			}
 		}
 
+		public string GetEnvironment()
+		{
+			return Environment;
+		}
 		public string Region()
 		{
 			return _region;
