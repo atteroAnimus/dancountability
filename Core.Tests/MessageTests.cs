@@ -1,14 +1,8 @@
 using System;
 using System.Collections.Generic;
-using System.IO;
-using Amazon;
-using Amazon.Runtime.Internal.Util;
-using Amazon.SQS;
 using Core.Models;
 using Data;
-using Microsoft.Extensions.DependencyModel;
 using Moq;
-using Newtonsoft.Json;
 using Xunit;
 using Xunit.Abstractions;
 
@@ -27,8 +21,8 @@ namespace Core.Tests
 		public void TestBufferRawMessage()
 		{
 			var queueMock = new Mock<IQueuable>();
-			queueMock.Setup(x => x.Push(It.IsAny<InsertionModel>())).Callback<InsertionModel>(x =>
-					_output.WriteLine($"successfully pushed {x.ActivityType} to queue"))
+			var acType = ActivityType.Unknown;
+			queueMock.Setup(x => x.Push(It.IsAny<InsertionModel>())).Callback<InsertionModel>( x => acType = x.ActivityType )
 				.Verifiable();
 			var dataMock = new Mock<IData>();
 			dataMock.Setup(x => x.Save(It.IsAny<LogEntity>()))
@@ -37,6 +31,7 @@ namespace Core.Tests
 			var messageHandler = new MessageHandler(queueMock.Object, dataMock.Object);
 			messageHandler.BufferRawMessage(":eggplant:");
 			queueMock.Verify(x => x.Push(It.IsAny<InsertionModel>()), Times.Once());
+			Assert.Equal(ActivityType.Sb, acType);
 		}
 
 		[Theory]
