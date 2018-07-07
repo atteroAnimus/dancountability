@@ -23,7 +23,7 @@ jobs:
           root: .
           paths:
             - artifacts
-  test:
+  api-unit-tests:
     docker:
       - image: dantaylor/serverless-build-helper
     steps:
@@ -34,8 +34,33 @@ jobs:
           name: Test api.Tests.csproj
           command: dotnet test ./api.Tests/api.Tests.csproj --logger "trx;LogFileName=../../artifacts/test-results/Api.Tests/result.xml"
       - run:
+          name: Test IocFactory.Tests
+          command: dotnet test ./IocFactory.Tests/IocFactory.Tests.csproj --logger "trx;LogFileName=../../artifacts/test-results/IocFactory.Tests/result.xml"
+      - store_test_results:
+          path: /root/project/artifacts/test-results
+      - store_artifacts:
+          path: artifacts/test-results
+  core-unit-tests:
+    docker:
+      - image: dantaylor/serverless-build-helper
+    steps:
+      - checkout
+      - attach_workspace:
+          at: .
+      - run:
           name: Test Core.Tests
           command: dotnet test ./Core.Tests/Core.Tests.csproj --logger "trx;LogFileName=../../artifacts/test-results/Core.Tests/result.xml"
+      - store_test_results:
+          path: /root/project/artifacts/test-results
+      - store_artifacts:
+          path: artifacts/test-results
+  ioc-factory-tests:
+    docker:
+      - image: dantaylor/serverless-build-helper
+    steps:
+      - checkout
+      - attach_workspace:
+          at: .
       - run:
           name: Test IocFactory.Tests
           command: dotnet test ./IocFactory.Tests/IocFactory.Tests.csproj --logger "trx;LogFileName=../../artifacts/test-results/IocFactory.Tests/result.xml"
@@ -57,20 +82,6 @@ jobs:
             sls config credentials --provider aws --key $aws_access_key_id --secret $aws_secret_access_key
             cd api/
             sls deploy --v --stage $STAGE
-#  destroy:
-#    docker:
-#      - image: dantaylor/serverless-build-helper
-#    steps:
-#      - checkout
-#      - attach_workspace:
-#          at: .
-#      - run:
-#          name: destroy the feature artifacts
-#          command: |
-#            STAGE=`echo ${CIRCLE_BRANCH} | sed 's/\//-/g'`
-#            sls config credentials --provider aws --key $aws_access_key_id --secret $aws_secret_access_key
-#            cd api/
-#            #sls remove --v --stage $STAGE
 workflows:
   version: 2
   build_and_test:
@@ -86,7 +97,23 @@ workflows:
               ignore: 
                 - /destroy/
                 - /finish.*/
-      - test:
+      - api-unit-tests:
+          requires:
+            - build_dev
+          filters:
+            tags:
+              ignore:
+                - /destroy/
+                - /finish.*/
+      - core-unit-tests:
+          requires:
+            - build_dev
+          filters:
+            tags:
+              ignore:
+                - /destroy/
+                - /finish.*/
+      - ioc-factory-tests:
           requires:
             - build_dev
           filters:
@@ -97,7 +124,9 @@ workflows:
       - deploy:
           requires:
             - build_dev
-            - test
+            - api-unit-tests
+            - core-unit-tests
+            - ioc-factory-tests
           filters:
             tags:
               ignore:
