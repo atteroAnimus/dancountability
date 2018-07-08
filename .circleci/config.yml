@@ -3,7 +3,7 @@ jobs:
   build_dev:
     working_directory: ~/repo
     docker:
-      - image: dantaylor/serverless-build-helper
+      - image: dantaylor/serverless-build-helper:2.1-sdk-1.28.0-sls
     steps:
       - checkout
       - attach_workspace:
@@ -25,7 +25,7 @@ jobs:
             - artifacts
   api-unit-tests:
     docker:
-      - image: dantaylor/serverless-build-helper
+      - image: dantaylor/serverless-build-helper:2.1-sdk-1.28.0-sls
     steps:
       - checkout
       - attach_workspace:
@@ -42,7 +42,7 @@ jobs:
           path: artifacts/test-results
   core-unit-tests:
     docker:
-      - image: dantaylor/serverless-build-helper
+      - image: dantaylor/serverless-build-helper:2.1-sdk-1.28.0-sls
     steps:
       - checkout
       - attach_workspace:
@@ -56,7 +56,7 @@ jobs:
           path: artifacts/test-results
   ioc-factory-tests:
     docker:
-      - image: dantaylor/serverless-build-helper
+      - image: dantaylor/serverless-build-helper:2.1-sdk-1.28.0-sls
     steps:
       - checkout
       - attach_workspace:
@@ -70,7 +70,7 @@ jobs:
           path: artifacts/test-results
   deploy:
     docker:
-      - image: dantaylor/serverless-build-helper
+      - image: dantaylor/serverless-build-helper:2.1-sdk-1.28.0-sls
     steps:
       - checkout
       - attach_workspace:
