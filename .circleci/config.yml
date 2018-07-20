@@ -39,7 +39,7 @@ jobs:
       - store_test_results:
           path: /root/project/artifacts/test-results
       - store_artifacts:
-          path: artifacts/test-results
+          path: /root/project/artifacts/test-results
   core-unit-tests:
     docker:
       - image: dantaylor/serverless-build-helper:2.1-sdk-1.28.0-sls
@@ -53,7 +53,7 @@ jobs:
       - store_test_results:
           path: /root/project/artifacts/test-results
       - store_artifacts:
-          path: artifacts/test-results
+          path: /root/project/artifacts/test-results
   ioc-factory-tests:
     docker:
       - image: dantaylor/serverless-build-helper:2.1-sdk-1.28.0-sls
@@ -67,7 +67,7 @@ jobs:
       - store_test_results:
           path: /root/project/artifacts/test-results
       - store_artifacts:
-          path: artifacts/test-results
+          path: /root/project/artifacts/test-results
   deploy:
     docker:
       - image: dantaylor/serverless-build-helper:2.1-sdk-1.28.0-sls
