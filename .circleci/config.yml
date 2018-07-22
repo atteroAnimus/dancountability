@@ -37,9 +37,9 @@ jobs:
           name: Test IocFactory.Tests
           command: dotnet test ./IocFactory.Tests/IocFactory.Tests.csproj --logger "trx;LogFileName=../../artifacts/test-results/IocFactory.Tests/result.xml"
       - store_test_results:
-          path: /root/project/artifacts/test-results
+          path: /root/project/artifacts/test-results/Api.Tests/
       - store_artifacts:
-          path: artifacts/test-results
+          path: /root/project/artifacts/test-results
   core-unit-tests:
     docker:
       - image: dantaylor/serverless-build-helper:2.1-sdk-1.28.0-sls
@@ -51,9 +51,9 @@ jobs:
           name: Test Core.Tests
           command: dotnet test ./Core.Tests/Core.Tests.csproj --logger "trx;LogFileName=../../artifacts/test-results/Core.Tests/result.xml"
       - store_test_results:
-          path: /root/project/artifacts/test-results
+          path: /root/project/artifacts/test-results/Core.Tests/
       - store_artifacts:
-          path: artifacts/test-results
+          path: /root/project/artifacts/test-results
   ioc-factory-tests:
     docker:
       - image: dantaylor/serverless-build-helper:2.1-sdk-1.28.0-sls
@@ -65,9 +65,9 @@ jobs:
           name: Test IocFactory.Tests
           command: dotnet test ./IocFactory.Tests/IocFactory.Tests.csproj --logger "trx;LogFileName=../../artifacts/test-results/IocFactory.Tests/result.xml"
       - store_test_results:
-          path: /root/project/artifacts/test-results
+          path: /root/project/artifacts/test-results/IocFactory.Tests/
       - store_artifacts:
-          path: artifacts/test-results
+          path: /root/project/artifacts/test-results
   deploy:
     docker:
       - image: dantaylor/serverless-build-helper:2.1-sdk-1.28.0-sls
