@@ -6,7 +6,7 @@ using Amazon.SimpleSystemsManagement.Model;
 
 namespace Common
 {
-	public class AppConfig : IAppConfig
+	public class AppConfig : IAppConfig	
 	{
 		private string _region => System.Environment.GetEnvironmentVariable("region") ?? "us-east-1";
 		public string Profile => System.Environment.GetEnvironmentVariable("profile") ?? "default";

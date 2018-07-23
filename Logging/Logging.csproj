@@ -8,4 +8,10 @@
   <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
     <WarningsAsErrors />
   </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="AWSSDK.S3" Version="3.3.19" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Common\Common.csproj" />
+  </ItemGroup>
 </Project>

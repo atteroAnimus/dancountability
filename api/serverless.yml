@@ -22,6 +22,10 @@ provider:
         - "sqs:ListQueues"
         - "sqs:ChangeMessageVisibility"
         - "sqs:SendMessage"
+        - "s3:PutObject"
+        - "s3:ListAllMyBuckets"
+        - "s3:ListBucket"
+        - "s3:CreateBucket"
       Resource: '*'
 package:
   artifact: ../artifacts/deploy-package.zip 
@@ -49,6 +53,10 @@ functions:
               - Arn
 resources:
   Resources:
+    logBucket:
+      Type: AWS::S3::Bucket
+      Properties:
+        Name: dancountability-log-${opt:stage, 'develop'}
     incomingQueueParameter:
       Type: AWS::SSM::Parameter
       DependsOn: IncomingLogQueue

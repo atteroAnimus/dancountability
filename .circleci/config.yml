@@ -32,12 +32,11 @@ jobs:
           at: .
       - run:
           name: Test api.Tests.csproj
-          command: dotnet test ./api.Tests/api.Tests.csproj --logger "trx;LogFileName=../../artifacts/test-results/Api.Tests/result.xml"
-      - run:
-          name: Test IocFactory.Tests
-          command: dotnet test ./IocFactory.Tests/IocFactory.Tests.csproj --logger "trx;LogFileName=../../artifacts/test-results/IocFactory.Tests/result.xml"
+          command: | 
+            dotnet test ./api.Tests/api.Tests.csproj --logger "trx;LogFileName=../../artifacts/test-results/Api.Tests/xunit/result.xml"
+            dotnet xunit-to-junit "../../artifacts/test-results/Api.Tests/xunit/result.xml" "../../artifcts/test-results/Api.Tests/junit/result.xml"
       - store_test_results:
-          path: /root/project/artifacts/test-results/Api.Tests/
+          path: /root/project/artifacts/test-results/Api.Tests/junit
       - store_artifacts:
           path: /root/project/artifacts/test-results
   core-unit-tests:
@@ -49,9 +48,11 @@ jobs:
           at: .
       - run:
           name: Test Core.Tests
-          command: dotnet test ./Core.Tests/Core.Tests.csproj --logger "trx;LogFileName=../../artifacts/test-results/Core.Tests/result.xml"
+          command: |
+            dotnet test ./Core.Tests/Core.Tests.csproj --logger "trx;LogFileName=../../artifacts/test-results/Core.Tests/xunit/result.xml"
+            dotnet xunit-to-junit "../../artifacts/test-results/Core.Tests/xunit/result.xml" "../../artifcts/test-results/Core.Tests/junit/result.xml"
       - store_test_results:
-          path: /root/project/artifacts/test-results/Core.Tests/
+          path: /root/project/artifacts/test-results/Core.Tests/junit
       - store_artifacts:
           path: /root/project/artifacts/test-results
   ioc-factory-tests:
@@ -63,9 +64,11 @@ jobs:
           at: .
       - run:
           name: Test IocFactory.Tests
-          command: dotnet test ./IocFactory.Tests/IocFactory.Tests.csproj --logger "trx;LogFileName=../../artifacts/test-results/IocFactory.Tests/result.xml"
+          command: |
+            dotnet test ./IocFactory.Tests/IocFactory.Tests.csproj --logger "trx;LogFileName=../../artifacts/test-results/IocFactory.Tests/xunit/result.xml"
+            dotnet xunit-to-junit "../../artifacts/test-results/IocFactory.Tests/xunit/result.xml" "../../artifcts/test-results/IocFactory.Tests/junit/result.xml"
       - store_test_results:
-          path: /root/project/artifacts/test-results/IocFactory.Tests/
+          path: /root/project/artifacts/test-results/IocFactory.Tests/junit
       - store_artifacts:
           path: /root/project/artifacts/test-results
   deploy:
