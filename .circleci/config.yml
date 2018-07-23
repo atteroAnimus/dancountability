@@ -3,7 +3,7 @@ jobs:
   build_dev:
     working_directory: ~/repo
     docker:
-      - image: dantaylor/serverless-build-helper:2.1-sdk-1.28.0-sls
+      - image: dantaylor/serverless-build-helper:2.1-sdk-1.28.0-sls-awscli
     steps:
       - checkout
       - attach_workspace:
@@ -25,7 +25,7 @@ jobs:
             - artifacts
   api-unit-tests:
     docker:
-      - image: dantaylor/serverless-build-helper:2.1-sdk-1.28.0-sls
+      - image: dantaylor/serverless-build-helper:2.1-sdk-1.28.0-sls-awscli
     steps:
       - checkout
       - attach_workspace:
@@ -41,7 +41,7 @@ jobs:
           path: /root/project/artifacts/test-results
   core-unit-tests:
     docker:
-      - image: dantaylor/serverless-build-helper:2.1-sdk-1.28.0-sls
+      - image: dantaylor/serverless-build-helper:2.1-sdk-1.28.0-sls-awscli
     steps:
       - checkout
       - attach_workspace:
@@ -57,7 +57,7 @@ jobs:
           path: /root/project/artifacts/test-results
   ioc-factory-tests:
     docker:
-      - image: dantaylor/serverless-build-helper:2.1-sdk-1.28.0-sls
+      - image: dantaylor/serverless-build-helper:2.1-sdk-1.28.0-sls-awscli
     steps:
       - checkout
       - attach_workspace:
@@ -73,7 +73,7 @@ jobs:
           path: /root/project/artifacts/test-results
   deploy:
     docker:
-      - image: dantaylor/serverless-build-helper:2.1-sdk-1.28.0-sls
+      - image: dantaylor/serverless-build-helper:2.1-sdk-1.28.0-sls-awscli
     steps:
       - checkout
       - attach_workspace:
