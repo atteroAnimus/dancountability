@@ -35,9 +35,8 @@ jobs:
           name: Test api.Tests.csproj
           command: |
             cd api.Tests/
-            ls -la
-            dotnet xunit -fxversion 2.1.1 -namespace api.Tests -xml ../../artifacts/test-results/api.Tests/xunit/result.xml
-            dotnet xunit-to-junit "../../artifacts/test-results/Api.Tests/xunit/result.xml" "../../artifcts/test-results/Api.Tests/junit/result.xml"
+            dotnet xunit -fxversion 2.1.1 -namespace api.Tests -xml result.xml
+            dotnet xunit-to-junit "result.xml" "../../artifacts/test-results/Api.Tests/junit/result.xml"
       - store_test_results:
           path: /root/project/artifacts/test-results/Api.Tests/junit
       - store_artifacts:
@@ -53,31 +52,24 @@ jobs:
           name: Test Core.Tests
           command: |
             cd Core.Tests/
-            ls -la
-            dotnet xunit -fxversion 2.1.1 -namsespace Core.Tests -xml ../../artifacts/test-results/Core.Tests/xunit/result.xml
-            dotnet xunit-to-junit "../../artifacts/test-results/Core.Tests/xunit/result.xml" "../../artifcts/test-results/Core.Tests/junit/result.xml"
+            dotnet xunit -fxversion 2.1.1 -namsespace Core.Tests -xml result.xml
+            dotnet xunit-to-junit "result.xml" "../../artifacts/test-results/Core.Tests/junit/result.xml"
       - store_test_results:
           path: /root/project/artifacts/test-results/Core.Tests/junit
       - store_artifacts:
           path: /root/project/artifacts/test-results
-  ioc-factory-tests:
+  logging-tests:
     docker:
       - image: dantaylor/serverless-build-helper
     steps:
-      - checkout
       - attach_workspace:
           at: .
       - run:
-          name: Test IocFactory.Tests
+          name: Test Logging.Tests
           command: |
-            cd IocFactory.Tests/
-            ls -la
-            dotnet xunit -fxversion 2.1.1 -namsespace IocFactory.Tests -xml ../../artifacts/test-results/IocFactory.Tests/xunit/result.xml
-            dotnet xunit-to-junit "../../artifacts/test-results/IocFactory.Tests/xunit/result.xml" "../../artifcts/test-results/IocFactory.Tests/junit/result.xml"
-      - store_test_results:
-          path: /root/project/artifacts/test-results/IocFactory.Tests/junit
-      - store_artifacts:
-          path: /root/project/artifacts/test-results
+            cd Logging.Tests/
+            dotnet xunit -namespace Logging.Tests -xml result.xml
+            dotnet xunit-to-junit "result.xml" "../../artifacts/test-results/Logging.Tests/junit/result.xml"
   deploy:
     docker:
       - image: dantaylor/serverless-build-helper
@@ -123,20 +115,11 @@ workflows:
               ignore:
                 - /destroy/
                 - /finish.*/
-      - ioc-factory-tests:
-          requires:
-            - build_dev
-          filters:
-            tags:
-              ignore:
-                - /destroy/
-                - /finish.*/
       - deploy:
           requires:
             - build_dev
             - api-unit-tests
             - core-unit-tests
-            - ioc-factory-tests
           filters:
             tags:
               ignore:

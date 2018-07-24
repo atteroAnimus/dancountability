@@ -1,0 +1,12 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<assemblies timestamp="07/24/2018 16:55:39">
+  <assembly name="api.Tests.dll" environment="64-bit .NET Standard [collection-per-class, parallel (8 threads)]" test-framework="xUnit.net 2.4.0.4049" run-date="2018-07-24" run-time="16:55:38" total="1" passed="1" failed="0" skipped="0" time="0.377" errors="0">
+    <errors />
+    <collection total="1" passed="1" failed="0" skipped="0" name="Test collection for api.Tests.ApiTests" time="0.238">
+      <test name="api.Tests.ApiTests.TestSendRequest" type="api.Tests.ApiTests" method="TestSendRequest" time="0.23845" result="Pass">
+        <output><![CDATA[received testText for buffering
+]]></output>
+      </test>
+    </collection>
+  </assembly>
+</assemblies>
