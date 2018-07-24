@@ -29,7 +29,7 @@ jobs:
     steps:
       - checkout
       - attach_workspace:
-          at: .
+          at: ~/repo
       - run:
           name: Test api.Tests.csproj
           command: | 
@@ -50,7 +50,7 @@ jobs:
     steps:
       - checkout
       - attach_workspace:
-          at: .
+          at: ~/repo
       - run:
           name: Test Core.Tests
           command: |
@@ -71,7 +71,7 @@ jobs:
     steps:
       - checkout
       - attach_workspace:
-          at: .
+          at: ~/repo
       - run:
           name: Test IocFactory.Tests
           command: |
@@ -92,7 +92,7 @@ jobs:
     steps:
       - checkout
       - attach_workspace:
-          at: .
+          at: ~/repo
       - run:
           name: deploy serverless code
           command: |
