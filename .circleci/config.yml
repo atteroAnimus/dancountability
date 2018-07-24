@@ -33,6 +33,7 @@ jobs:
       - run:
           name: Test api.Tests.csproj
           command: | 
+            dotnet restore
             dotnet xunit -fxversion 2.1.1 -namespace api.Tests -xml ../../artifacts/test-results/api.Tests/xunit/result.xml
             dotnet xunit-to-junit "../../artifacts/test-results/Api.Tests/xunit/result.xml" "../../artifcts/test-results/Api.Tests/junit/result.xml"
       - store_test_results:
@@ -49,6 +50,7 @@ jobs:
       - run:
           name: Test Core.Tests
           command: |
+            dotnet restore
             dotnet xunit -fxversion 2.1.1 -namsespace Core.Tests -xml ../../artifacts/test-results/Core.Tests/xunit/result.xml
             dotnet xunit-to-junit "../../artifacts/test-results/Core.Tests/xunit/result.xml" "../../artifcts/test-results/Core.Tests/junit/result.xml"
       - store_test_results:
@@ -65,6 +67,7 @@ jobs:
       - run:
           name: Test IocFactory.Tests
           command: |
+            dotnet restore
             dotnet xunit -fxversion 2.1.1 -namsespace IocFactory.Tests -xml ../../artifacts/test-results/IocFactory.Tests/xunit/result.xml
             dotnet xunit-to-junit "../../artifacts/test-results/IocFactory.Tests/xunit/result.xml" "../../artifcts/test-results/IocFactory.Tests/junit/result.xml"
       - store_test_results:
