@@ -3,7 +3,7 @@ jobs:
   build_dev:
     working_directory: ~/repo
     docker:
-      - image: dantaylor/serverless-build-helper:2.1-sdk-1.28.0-sls-awscli
+      - image: dantaylor/serverless-build-helper:xunit-to-junit
     steps:
       - checkout
       - attach_workspace:
@@ -25,7 +25,7 @@ jobs:
             - artifacts
   api-unit-tests:
     docker:
-      - image: dantaylor/serverless-build-helper:2.1-sdk-1.28.0-sls-awscli
+      - image: dantaylor/serverless-build-helper
     steps:
       - checkout
       - attach_workspace:
@@ -33,7 +33,7 @@ jobs:
       - run:
           name: Test api.Tests.csproj
           command: | 
-            dotnet test ./api.Tests/api.Tests.csproj --logger "trx;LogFileName=../../artifacts/test-results/Api.Tests/xunit/result.xml"
+            dotnet xunit -fxversion 2.1.1 -namespace api.Tests -xml ../../artifacts/test-results/api.Tests/xunit/result.xml
             dotnet xunit-to-junit "../../artifacts/test-results/Api.Tests/xunit/result.xml" "../../artifcts/test-results/Api.Tests/junit/result.xml"
       - store_test_results:
           path: /root/project/artifacts/test-results/Api.Tests/junit
@@ -41,7 +41,7 @@ jobs:
           path: /root/project/artifacts/test-results
   core-unit-tests:
     docker:
-      - image: dantaylor/serverless-build-helper:2.1-sdk-1.28.0-sls-awscli
+      - image: dantaylor/serverless-build-helper
     steps:
       - checkout
       - attach_workspace:
@@ -49,7 +49,7 @@ jobs:
       - run:
           name: Test Core.Tests
           command: |
-            dotnet test ./Core.Tests/Core.Tests.csproj --logger "trx;LogFileName=../../artifacts/test-results/Core.Tests/xunit/result.xml"
+            dotnet xunit -fxversion 2.1.1 -namsespace Core.Tests -xml ../../artifacts/test-results/Core.Tests/xunit/result.xml
             dotnet xunit-to-junit "../../artifacts/test-results/Core.Tests/xunit/result.xml" "../../artifcts/test-results/Core.Tests/junit/result.xml"
       - store_test_results:
           path: /root/project/artifacts/test-results/Core.Tests/junit
@@ -57,7 +57,7 @@ jobs:
           path: /root/project/artifacts/test-results
   ioc-factory-tests:
     docker:
-      - image: dantaylor/serverless-build-helper:2.1-sdk-1.28.0-sls-awscli
+      - image: dantaylor/serverless-build-helper
     steps:
       - checkout
       - attach_workspace:
@@ -65,7 +65,7 @@ jobs:
       - run:
           name: Test IocFactory.Tests
           command: |
-            dotnet test ./IocFactory.Tests/IocFactory.Tests.csproj --logger "trx;LogFileName=../../artifacts/test-results/IocFactory.Tests/xunit/result.xml"
+            dotnet xunit -fxversion 2.1.1 -namsespace IocFactory.Tests -xml ../../artifacts/test-results/IocFactory.Tests/xunit/result.xml
             dotnet xunit-to-junit "../../artifacts/test-results/IocFactory.Tests/xunit/result.xml" "../../artifcts/test-results/IocFactory.Tests/junit/result.xml"
       - store_test_results:
           path: /root/project/artifacts/test-results/IocFactory.Tests/junit
@@ -73,7 +73,7 @@ jobs:
           path: /root/project/artifacts/test-results
   deploy:
     docker:
-      - image: dantaylor/serverless-build-helper:2.1-sdk-1.28.0-sls-awscli
+      - image: dantaylor/serverless-build-helper
     steps:
       - checkout
       - attach_workspace:
