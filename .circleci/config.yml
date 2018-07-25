@@ -52,7 +52,7 @@ jobs:
           name: Test Core.Tests
           command: |
             cd Core.Tests/
-            dotnet xunit -namsespace Core.Tests -xml result.xml
+            dotnet xunit -namespace Core.Tests -xml result.xml
             dotnet xunit-to-junit "result.xml" "../../artifacts/test-results/Core.Tests/junit/result.xml"
       - store_test_results:
           path: /root/project/artifacts/test-results/Core.Tests/junit
