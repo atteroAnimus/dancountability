@@ -23,7 +23,6 @@ jobs:
       - persist_to_workspace:
           root: /
           paths:
-            - /tmp
             - .
   api-unit-tests:
     docker:
@@ -31,10 +30,11 @@ jobs:
     steps:
       - checkout
       - attach_workspace:
-          at: .
+          at: /
       - run:
           name: Test api.Tests.csproj
           command: |
+            ls -l /tmp
             cd api.Tests/
             dotnet xunit -fxversion 2.1.1 -namespace api.Tests -xml result.xml
             dotnet xunit-to-junit result.xml ../../artifacts/test-results/Api.Tests/junit/result.xml
@@ -48,7 +48,7 @@ jobs:
     steps:
       - checkout
       - attach_workspace:
-          at: .
+          at: /
       - run:
           name: Test Core.Tests
           command: |
@@ -64,7 +64,7 @@ jobs:
       - image: dantaylor/serverless-build-helper
     steps:
       - attach_workspace:
-          at: .
+          at: /
       - run:
           name: Test Logging.Tests
           command: |
