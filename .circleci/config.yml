@@ -38,7 +38,7 @@ jobs:
             dotnet restore
             cd api.Tests/
             dotnet xunit -fxversion 2.1.1 -namespace api.Tests -xml result.xml
-            dotnet xunit-to-junit "result.xml" "../../artifacts/test-results/Api.Tests/junit/result.xml"
+            dotnet xunit-to-junit result.xml ../../artifacts/test-results/Api.Tests/junit/result.xml
       - store_test_results:
           path: /root/project/artifacts/test-results/Api.Tests/junit
       - store_artifacts:
@@ -56,7 +56,7 @@ jobs:
             dotnet restore
             cd Core.Tests/
             dotnet xunit -fxversion 2.1.1 -namespace Core.Tests -xml result.xml
-            dotnet xunit-to-junit "result.xml" "../../artifacts/test-results/Core.Tests/junit/result.xml"
+            dotnet xunit-to-junit result.xml ../../artifacts/test-results/Core.Tests/junit/result.xml
       - store_test_results:
           path: /root/project/artifacts/test-results/Core.Tests/junit
       - store_artifacts:
@@ -73,7 +73,7 @@ jobs:
             dotnet restore
             cd Logging.Tests/
             dotnet xunit -fxversion 2.1.1 -namespace Logging.Tests -xml result.xml
-            dotnet xunit-to-junit "result.xml" "../../artifacts/test-results/Logging.Tests/junit/result.xml"
+            dotnet xunit-to-junit result.xml ../../artifacts/test-results/Logging.Tests/junit/result.xml
   deploy:
     docker:
       - image: dantaylor/serverless-build-helper
