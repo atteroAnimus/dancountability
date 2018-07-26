@@ -23,14 +23,15 @@ jobs:
       - persist_to_workspace:
           root: /
           paths:
-            - /
+            - /tmp
+            - .
   api-unit-tests:
     docker:
       - image: dantaylor/serverless-build-helper
     steps:
       - checkout
       - attach_workspace:
-          at: /
+          at: .
       - run:
           name: Test api.Tests.csproj
           command: |
@@ -47,7 +48,7 @@ jobs:
     steps:
       - checkout
       - attach_workspace:
-          at: /
+          at: .
       - run:
           name: Test Core.Tests
           command: |
@@ -63,7 +64,7 @@ jobs:
       - image: dantaylor/serverless-build-helper
     steps:
       - attach_workspace:
-          at: /
+          at: .
       - run:
           name: Test Logging.Tests
           command: |
@@ -80,7 +81,7 @@ jobs:
     steps:
       - checkout
       - attach_workspace:
-          at: /
+          at: .
       - run:
           name: deploy serverless code
           command: |
