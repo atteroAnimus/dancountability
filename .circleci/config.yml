@@ -17,6 +17,7 @@ jobs:
           command: | 
             cd api/
             ./build.sh
+            dotnet build
       - store_artifacts:
           path: artifacts
       - persist_to_workspace:
@@ -35,7 +36,7 @@ jobs:
           name: Test api.Tests.csproj
           command: |
             cd api.Tests/
-            dotnet xunit -namespace api.Tests -xml result.xml
+            dotnet xunit -fxversion 2.1.1 -namespace api.Tests -xml result.xml
             dotnet xunit-to-junit "result.xml" "../../artifacts/test-results/Api.Tests/junit/result.xml"
       - store_test_results:
           path: /root/project/artifacts/test-results/Api.Tests/junit
@@ -52,7 +53,7 @@ jobs:
           name: Test Core.Tests
           command: |
             cd Core.Tests/
-            dotnet xunit -namespace Core.Tests -xml result.xml
+            dotnet xunit -fxversion 2.1.1 -namespace Core.Tests -xml result.xml
             dotnet xunit-to-junit "result.xml" "../../artifacts/test-results/Core.Tests/junit/result.xml"
       - store_test_results:
           path: /root/project/artifacts/test-results/Core.Tests/junit
@@ -68,7 +69,7 @@ jobs:
           name: Test Logging.Tests
           command: |
             cd Logging.Tests/
-            dotnet xunit -namespace Logging.Tests -xml result.xml
+            dotnet xunit -fxversion 2.1.1 -namespace Logging.Tests -xml result.xml
             dotnet xunit-to-junit "result.xml" "../../artifacts/test-results/Logging.Tests/junit/result.xml"
   deploy:
     docker:
