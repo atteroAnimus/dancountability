@@ -21,21 +21,19 @@ jobs:
       - store_artifacts:
           path: artifacts
       - persist_to_workspace:
-          root: .
+          root: /
           paths:
-            - artifacts
-            - .
+            - /
   api-unit-tests:
     docker:
       - image: dantaylor/serverless-build-helper
     steps:
       - checkout
       - attach_workspace:
-          at: .
+          at: /
       - run:
           name: Test api.Tests.csproj
           command: |
-            dotnet restore
             cd api.Tests/
             dotnet xunit -fxversion 2.1.1 -namespace api.Tests -xml result.xml
             dotnet xunit-to-junit result.xml ../../artifacts/test-results/Api.Tests/junit/result.xml
@@ -49,11 +47,10 @@ jobs:
     steps:
       - checkout
       - attach_workspace:
-          at: .
+          at: /
       - run:
           name: Test Core.Tests
           command: |
-            dotnet restore
             cd Core.Tests/
             dotnet xunit -fxversion 2.1.1 -namespace Core.Tests -xml result.xml
             dotnet xunit-to-junit result.xml ../../artifacts/test-results/Core.Tests/junit/result.xml
@@ -66,11 +63,10 @@ jobs:
       - image: dantaylor/serverless-build-helper
     steps:
       - attach_workspace:
-          at: .
+          at: /
       - run:
           name: Test Logging.Tests
           command: |
-            dotnet restore
             cd Logging.Tests/
             dotnet xunit -fxversion 2.1.1 -namespace Logging.Tests -xml result.xml
             dotnet xunit-to-junit result.xml ../../artifacts/test-results/Logging.Tests/junit/result.xml
@@ -84,7 +80,7 @@ jobs:
     steps:
       - checkout
       - attach_workspace:
-          at: .
+          at: /
       - run:
           name: deploy serverless code
           command: |
