@@ -21,10 +21,11 @@ jobs:
       - store_artifacts:
           path: artifacts
       - persist_to_workspace:
-          root: /
+          root: .
           paths:
             - tmp/
             - .
+            - artifacts
   api-unit-tests:
     docker:
       - image: dantaylor/serverless-build-helper
