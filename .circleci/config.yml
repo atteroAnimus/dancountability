@@ -37,13 +37,13 @@ jobs:
           command: |
             cd api.Tests/
             dotnet xunit -fxversion 2.1.1 -namespace api.Tests -xml result.xml
-            dotnet xunit-to-junit result.xml ../../artifacts/test-results/Api.Tests/junit/result.xml
-            cd ../../artifacts/test-results/api.Tests/junit/
+            dotnet xunit-to-junit result.xml ../../test-results/Api.Tests/junit/result.xml
+            cd ../../test-results/Api.Tests/junit/
             pwd
       - store_test_results:
-          path: /root/artifacts/test-results/Api.Tests/junit/result.xml
+          path: test-results/Api.Tests/junit/result.xml
       - store_artifacts:
-          path: /root/artifacts/test-results
+          path: test-results
   core-unit-tests:
     docker:
       - image: dantaylor/serverless-build-helper
@@ -59,13 +59,13 @@ jobs:
           command: |
             cd Core.Tests/
             dotnet xunit -fxversion 2.1.1 -namespace Core.Tests -xml result.xml
-            dotnet xunit-to-junit result.xml ../../artifacts/test-results/Core.Tests/junit/result.xml
-            cd ../../artifacts/test-results/Core.Tests/junit/
+            dotnet xunit-to-junit result.xml ../../test-results/Core.Tests/junit/result.xml
+            cd ../../test-results/Core.Tests/junit/
             pwd
       - store_test_results:
-          path: /root/artifacts/test-results/Core.Tests/junit/result.xml
+          path: test-results/Core.Tests/junit/result.xml
       - store_artifacts:
-          path: /root/artifacts/test-results
+          path: test-results
   logging-tests:
     docker:
       - image: dantaylor/serverless-build-helper
@@ -81,20 +81,20 @@ jobs:
           command: |
             cd Logging.Tests/
             dotnet xunit -fxversion 2.1.1 -namespace Logging.Tests -xml result.xml
-            dotnet xunit-to-junit result.xml ../../artifacts/test-results/Logging.Tests/junit/result.xml
-            cd ../../artifacts/test-results/Logging.Tests/junit/
+            dotnet xunit-to-junit result.xml ../../test-results/Logging.Tests/junit/result.xml
+            cd ../../test-results/Logging.Tests/junit/
             pwd
       - store_test_results:
-          path: /root/artifacts/test-results/Logging.Tests/junit/result.xml
+          path: test-results/Logging.Tests/junit/result.xml
       - store_artifacts:
-          path: /root/artifacts/test-results
+          path: test-results
   deploy:
     docker:
       - image: dantaylor/serverless-build-helper
     steps:
       - checkout
       - attach_workspace:
-          at: root/repo
+          at: .
       - run:
           name: deploy serverless code
           command: |
