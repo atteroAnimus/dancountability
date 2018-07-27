@@ -19,17 +19,16 @@ jobs:
       - store_artifacts:
           path: artifacts
       - persist_to_workspace:
-          root: /
+          root: .
           paths:
-            - tmp/
-            - root/repo
+            - .
   api-unit-tests:
     docker:
       - image: dantaylor/serverless-build-helper
     steps:
       - checkout
       - attach_workspace:
-          at: root/repo
+          at: .
       - run:
           name: restore :(
           command: dotnet restore
@@ -51,7 +50,7 @@ jobs:
     steps:
       - checkout
       - attach_workspace:
-          at: root/repo
+          at: .
       - run:
           name: restore :(
           command: dotnet restore
@@ -73,7 +72,7 @@ jobs:
     steps:
       - checkout
       - attach_workspace:
-          at: root/repo
+          at: .
       - run:
           name: restore :(
           command: dotnet restore
