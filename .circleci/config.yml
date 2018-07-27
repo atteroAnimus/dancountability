@@ -6,8 +6,6 @@ jobs:
       - image: dantaylor/serverless-build-helper:xunit-to-junit
     steps:
       - checkout
-      - attach_workspace:
-          at: .
       - run:
           name: restore
           command: |
@@ -21,17 +19,17 @@ jobs:
       - store_artifacts:
           path: artifacts
       - persist_to_workspace:
-          root: .
+          root: /
           paths:
-            - .
-            - artifacts
+            - tmp/
+            - root/repo
   api-unit-tests:
     docker:
       - image: dantaylor/serverless-build-helper
     steps:
       - checkout
       - attach_workspace:
-          at: .
+          at: root/repo
       - run:
           name: Test api.Tests.csproj
           command: |
@@ -49,7 +47,7 @@ jobs:
     steps:
       - checkout
       - attach_workspace:
-          at: .
+          at: root/repo
       - run:
           name: Test Core.Tests
           command: |
@@ -65,7 +63,7 @@ jobs:
       - image: dantaylor/serverless-build-helper
     steps:
       - attach_workspace:
-          at: .
+          at: root/repo
       - run:
           name: Test Logging.Tests
           command: |
@@ -82,7 +80,7 @@ jobs:
     steps:
       - checkout
       - attach_workspace:
-          at: .
+          at: root/repo
       - run:
           name: deploy serverless code
           command: |
