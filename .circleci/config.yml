@@ -23,7 +23,8 @@ jobs:
       - persist_to_workspace:
           root: /
           paths:
-            - .
+            - tmp/
+            - root/project/
   api-unit-tests:
     docker:
       - image: dantaylor/serverless-build-helper
