@@ -23,7 +23,6 @@ jobs:
       - persist_to_workspace:
           root: .
           paths:
-            - ../tmp/
             - .
             - artifacts
   api-unit-tests:
