@@ -41,9 +41,9 @@ jobs:
             cd ../../artifacts/test-results/api.Tests/junit/
             pwd
       - store_test_results:
-          path: /root/project/artifacts/test-results/Api.Tests/junit/result.xml
+          path: /root/artifacts/test-results/Api.Tests/junit/result.xml
       - store_artifacts:
-          path: /root/project/artifacts/test-results
+          path: /root/artifacts/test-results
   core-unit-tests:
     docker:
       - image: dantaylor/serverless-build-helper
@@ -63,9 +63,9 @@ jobs:
             cd ../../artifacts/test-results/Core.Tests/junit/
             pwd
       - store_test_results:
-          path: /root/project/artifacts/test-results/Core.Tests/junit/result.xml
+          path: /root/artifacts/test-results/Core.Tests/junit/result.xml
       - store_artifacts:
-          path: /root/project/artifacts/test-results
+          path: /root/artifacts/test-results
   logging-tests:
     docker:
       - image: dantaylor/serverless-build-helper
@@ -85,9 +85,9 @@ jobs:
             cd ../../artifacts/test-results/Logging.Tests/junit/
             pwd
       - store_test_results:
-          path: /root/project/artifacts/test-results/Logging.Tests/junit/result.xml
+          path: /root/artifacts/test-results/Logging.Tests/junit/result.xml
       - store_artifacts:
-          path: /root/project/artifacts/test-results
+          path: /root/artifacts/test-results
   deploy:
     docker:
       - image: dantaylor/serverless-build-helper
