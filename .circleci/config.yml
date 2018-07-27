@@ -40,8 +40,9 @@ jobs:
             cd api.Tests/
             dotnet xunit -fxversion 2.1.1 -namespace api.Tests -xml result.xml
             dotnet xunit-to-junit result.xml ../../artifacts/test-results/Api.Tests/junit/result.xml
+            ls -lR ../../artifacts/test-results/
       - store_test_results:
-          path: /root/project/artifacts/test-results/Api.Tests/junit/
+          path: /root/project/artifacts/test-results/Api.Tests/junit/result.xml
       - store_artifacts:
           path: /root/project/artifacts/test-results
   core-unit-tests:
@@ -60,8 +61,9 @@ jobs:
             cd Core.Tests/
             dotnet xunit -fxversion 2.1.1 -namespace Core.Tests -xml result.xml
             dotnet xunit-to-junit result.xml ../../artifacts/test-results/Core.Tests/junit/result.xml
+            ls -lR ../../artifacts/test-results/
       - store_test_results:
-          path: /root/project/artifacts/test-results/Core.Tests/junit/
+          path: /root/project/artifacts/test-results/Core.Tests/junit/result.xml
       - store_artifacts:
           path: /root/project/artifacts/test-results
   logging-tests:
@@ -80,8 +82,9 @@ jobs:
             cd Logging.Tests/
             dotnet xunit -fxversion 2.1.1 -namespace Logging.Tests -xml result.xml
             dotnet xunit-to-junit result.xml ../../artifacts/test-results/Logging.Tests/junit/result.xml
+            ls -lR ../../artifacts/test-results/
       - store_test_results:
-          path: /root/project/artifacts/test-results/Logging.Tests/junit/
+          path: /root/project/artifacts/test-results/Logging.Tests/junit/result.xml
       - store_artifacts:
           path: /root/project/artifacts/test-results
   deploy:
