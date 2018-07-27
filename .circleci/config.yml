@@ -37,9 +37,9 @@ jobs:
           command: |
             cd api.Tests/
             dotnet xunit -fxversion 2.1.1 -namespace api.Tests -xml result.xml
-            dotnet xunit-to-junit result.xml ../test-results/api/result.xml
+            dotnet xunit-to-junit result.xml ../test-results/api/results.xml
       - store_test_results:
-          path: test-results/api/result.xml
+          path: test-results/api/results.xml
       - store_artifacts:
           path: test-results
   core-unit-tests:
@@ -57,9 +57,9 @@ jobs:
           command: |
             cd Core.Tests/
             dotnet xunit -fxversion 2.1.1 -namespace Core.Tests -xml result.xml
-            dotnet xunit-to-junit result.xml ../test-results/core/result.xml
+            dotnet xunit-to-junit result.xml ../test-results/core/results.xml
       - store_test_results:
-          path: test-results/core/result.xml
+          path: test-results/core/results.xml
       - store_artifacts:
           path: test-results
   logging-tests:
@@ -77,9 +77,9 @@ jobs:
           command: |
             cd Logging.Tests/
             dotnet xunit -fxversion 2.1.1 -namespace Logging.Tests -xml result.xml
-            dotnet xunit-to-junit result.xml ../test-results/logging/result.xml
+            dotnet xunit-to-junit result.xml ../test-results/logging/results.xml
       - store_test_results:
-          path: test-results/logging/result.xml
+          path: test-results/logging/results.xml
       - store_artifacts:
           path: test-results
   deploy:
