@@ -34,6 +34,7 @@ jobs:
           name: Test api.Tests.csproj
           command: |
             pwd
+            ls -l
             cd api.Tests/
             dotnet xunit -fxversion 2.1.1 -namespace api.Tests -xml result.xml
             dotnet xunit-to-junit result.xml ../../artifacts/test-results/Api.Tests/junit/result.xml
@@ -52,6 +53,7 @@ jobs:
           name: Test Core.Tests
           command: |
             pwd
+            ls -l
             cd Core.Tests/
             dotnet xunit -fxversion 2.1.1 -namespace Core.Tests -xml result.xml
             dotnet xunit-to-junit result.xml ../../artifacts/test-results/Core.Tests/junit/result.xml
@@ -69,6 +71,7 @@ jobs:
           name: Test Logging.Tests
           command: |
             pwd
+            ls -l
             cd Logging.Tests/
             dotnet xunit -fxversion 2.1.1 -namespace Logging.Tests -xml result.xml
             dotnet xunit-to-junit result.xml ../../artifacts/test-results/Logging.Tests/junit/result.xml
