@@ -37,8 +37,8 @@ jobs:
           command: |
             cd api.Tests/
             dotnet xunit -fxversion 2.1.1 -namespace api.Tests -xml result.xml
-            dotnet xunit-to-junit result.xml ../../test-results/Api.Tests/junit/result.xml
-            cd ../../test-results/Api.Tests/junit/
+            dotnet xunit-to-junit result.xml ../test-results/Api.Tests/junit/result.xml
+            cd ../test-results/Api.Tests/junit/
             pwd
       - store_test_results:
           path: test-results/Api.Tests/junit/result.xml
@@ -59,8 +59,8 @@ jobs:
           command: |
             cd Core.Tests/
             dotnet xunit -fxversion 2.1.1 -namespace Core.Tests -xml result.xml
-            dotnet xunit-to-junit result.xml ../../test-results/Core.Tests/junit/result.xml
-            cd ../../test-results/Core.Tests/junit/
+            dotnet xunit-to-junit result.xml ../test-results/Core.Tests/junit/result.xml
+            cd ../test-results/Core.Tests/junit/
             pwd
       - store_test_results:
           path: test-results/Core.Tests/junit/result.xml
@@ -81,8 +81,8 @@ jobs:
           command: |
             cd Logging.Tests/
             dotnet xunit -fxversion 2.1.1 -namespace Logging.Tests -xml result.xml
-            dotnet xunit-to-junit result.xml ../../test-results/Logging.Tests/junit/result.xml
-            cd ../../test-results/Logging.Tests/junit/
+            dotnet xunit-to-junit result.xml ../test-results/Logging.Tests/junit/result.xml
+            cd ../test-results/Logging.Tests/junit/
             pwd
       - store_test_results:
           path: test-results/Logging.Tests/junit/result.xml
