@@ -92,7 +92,7 @@ jobs:
       - run:
           name: deploy serverless code
           command: |
-            STAGE=`echo ${CIRCLE_BRANCH} | sed 's/\//-/g'`
+            STAGE=`echo ${CIRCLE_BRANCH} | sed 's/\//-/g' | tr '[:upper:]' '[:lower:]'`
             sls config credentials --provider aws --key $aws_access_key_id --secret $aws_secret_access_key
             cd api/
             sls deploy --v --stage $STAGE
