@@ -56,7 +56,7 @@ resources:
     logBucket:
       Type: AWS::S3::Bucket
       Properties:
-        Name: dancountability-log-${opt:stage, 'develop'}
+        BucketName: dancountability-log-${opt:stage, 'develop'}
     incomingQueueParameter:
       Type: AWS::SSM::Parameter
       DependsOn: IncomingLogQueue
