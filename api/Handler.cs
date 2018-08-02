@@ -45,26 +45,26 @@ namespace Api
 		    {
 			    var records = new List<InsertionModel>();
 
-			    Console.WriteLine(JsonConvert.SerializeObject(sqsEvent));
+			    _logger.Telemetry(JsonConvert.SerializeObject(sqsEvent));
 			    foreach (var record in sqsEvent.Records)
 			    {
-				    Console.WriteLine(record.body);
+				    _logger.Telemetry(record.body);
 				    records.Add(JsonConvert.DeserializeObject<InsertionModel>(record.body.ToString()));
 			    }
 
-			    Console.WriteLine($"attempting to persist {records?.Count()} messages");
+			    _logger.Telemetry($"attempting to persist {records?.Count()} messages");
 			    _messagHandler.PersistMessage(records);
 		    }
 		    catch (Exception e)
 		    {
-			    Console.WriteLine(e);
+			    _logger.Critical(e, e.Message);
 			    throw;
 		    }
 	    }
 
 	    public APIGatewayProxyResponse Log(APIGatewayProxyRequest request, ILambdaContext context)
 	    {
-		    Console.WriteLine($"Debugging statement");
+		    _logger.Telemetry($"Debugging statement");
 		    var stopwatch = new Stopwatch();
 		    stopwatch.Start();
 	        

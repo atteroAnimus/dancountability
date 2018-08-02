@@ -57,6 +57,9 @@ resources:
       Type: AWS::S3::Bucket
       Properties:
         BucketName: dancountability-log-${opt:stage, 'develop'}
+        LifeCycleConfiguration:
+          Rules:
+            - ExpirationInDays: 32
     incomingQueueParameter:
       Type: AWS::SSM::Parameter
       DependsOn: IncomingLogQueue

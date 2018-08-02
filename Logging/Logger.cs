@@ -1,12 +1,9 @@
 ﻿using System;
-using System.Diagnostics;
-using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Text.RegularExpressions;
-using System.Threading;
-using Amazon.S3;
 using Amazon.S3.Model;
 using Common;
+using Newtonsoft.Json;
 
 namespace Logging
 {
@@ -31,9 +28,8 @@ namespace Logging
 
 		public void Log(string message)
 		{
-			Console.WriteLine(message);
+			Telemetry(message);
 		}
-
 
 		/// <summary>
 		/// Telemetry logs should be things like method start/stop and messages like "starting bucket grab."  Basically things that indicate a working, breathing app.
@@ -51,7 +47,9 @@ namespace Logging
 		/// <param name="message">Message to describe what might be happening at exception time.</param>
 		public void Critical(Exception ex, string message)
 		{
-			
+			var exceptionLog = new ExceptionLog(ex, message);
+			var json = JsonConvert.SerializeObject(exceptionLog);
+			SaveToS3(json);
 		}
 		
 		/// <summary>

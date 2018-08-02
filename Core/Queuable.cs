@@ -15,6 +15,7 @@ namespace Core
 		private readonly IAmazonSQS _client;
 		private readonly IAppConfig _config;
 		private readonly string _queueUrl;
+		private readonly QueueUtilities _utilities;
 		private readonly AmazonSQSConfig _sqsConfig;
 		public Queuable()
 		{
@@ -37,7 +38,7 @@ namespace Core
 		public void Push<T>(T item)
 		{
 			var json = JsonConvert.SerializeObject(item);
-			using (var client = new AmazonSQSClient(_sqsConfig))
+			using (var client = _utilities.GetQueuer(_sqsConfig))
 			{
 				var req = new SendMessageRequest
 				{
@@ -54,7 +55,7 @@ namespace Core
 
 		public T Pop<T>()
 		{
-			using (var client = _client)
+			using (var client = _utilities.GetQueuer(_sqsConfig))
 			{
 				var req = new ReceiveMessageRequest(_queueUrl);
 				var receiveResult = client.ReceiveMessageAsync(req).Result;

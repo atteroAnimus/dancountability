@@ -1,32 +1,37 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Timers;
 using Amazon.DynamoDBv2;
 using Amazon.DynamoDBv2.DocumentModel;
 using Common;
 using IocFactory;
+using Logging;
 
 namespace Data
 {
 	public class Data : IData
 	{
 		private IAppConfig _config;
+		private readonly ILogger _logger;
 
 		public Data()
 		{
 			_config = Factory.Instance.Resolve<IAppConfig>();
+			_logger = Factory.Instance.Resolve<ILogger>();
 		}
 
-		public Data(IAppConfig config)
+		public Data(IAppConfig config, ILogger logger)
 		{
 			_config = config;
+			_logger = logger;
 		}
 		public void Save(LogEntity model)
 		{
 
 			try
 			{
-				Console.WriteLine($"trying to log ${model.ActivityId}");
+				_logger.Telemetry($"trying to log ${model.ActivityId}");
 				using (var client = new AmazonDynamoDBClient())
 				{
 					var document = new Document
@@ -41,7 +46,7 @@ namespace Data
 			}
 			catch (Exception e)
 			{
-				Console.WriteLine(e);
+				_logger.Critical(e, e.Message);
 				throw;
 			}
 		}
@@ -60,7 +65,7 @@ namespace Data
 					})
 					.ToList();
 				
-				Console.WriteLine($"trying to log ${documents.Count} documents");
+				_logger.Telemetry($"trying to log ${documents.Count} documents");
 				
 
 				using (var client = new AmazonDynamoDBClient())
@@ -76,7 +81,7 @@ namespace Data
 			}
 			catch (Exception e)
 			{
-				Console.WriteLine(e);
+				_logger.Critical(e, e.Message);
 				throw;
 			}
 		}
