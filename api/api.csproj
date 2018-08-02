@@ -6,7 +6,7 @@
     <PackageId>aws-csharp</PackageId>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
-    <WarningsAsErrors />
+    <NoWarn>NU1605</NoWarn>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
     <NoWarn>NU1605</NoWarn>

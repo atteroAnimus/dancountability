@@ -1,6 +1,9 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Reflection;
+using System.Runtime.CompilerServices;
 using System.Text.RegularExpressions;
+using System.Threading;
 using Amazon.S3;
 using Amazon.S3.Model;
 using Common;
@@ -38,22 +41,7 @@ namespace Logging
 		/// <param name="message">The message that will appear in the telemetry output</param>
 		public void Telemetry(string message)
 		{
-
-			var prefix = $"{DateTime.UtcNow:yyyy-MM-dd}";
-			var keyName = _illegalFileCharacters.Replace(message, "-").Substring(0,15);
-			var fileNamePrefix = $"{DateTime.UtcNow:HH-mm-ss}";
-			
-			using (var client = _utilities.S3Client())
-			{
-				var putObjectRequest = new PutObjectRequest
-				{
-					ContentBody = message,
-					BucketName = $"dancountability-log-{_config.GetEnvironment()}",
-					Key = $"{prefix}{Guid.NewGuid()}"
-				};
-
-				var result = client.PutObjectAsync(putObjectRequest);
-			}
+			SaveToS3(message);
 		}
 
 		/// <summary>
@@ -72,7 +60,26 @@ namespace Logging
 		/// <param name="message"></param>
 		public void Diagnostic(string message)
 		{
+			SaveToS3(message);
+		}
+
+		private void SaveToS3(string message, [CallerMemberName] string callerName = "unknown")
+		{
+			var prefix = $"{callerName}/{DateTime.UtcNow:yyyy-MM-dd}";
+			var keyName = _illegalFileCharacters.Replace(message, "-").Substring(0, message.Length <= 30 ? message.Length : 30);
+			var fileNamePrefix = $"{DateTime.UtcNow:HH-mm-ss}";
 			
+			using (var client = _utilities.S3Client())
+			{
+				var putObjectRequest = new PutObjectRequest
+				{
+					ContentBody = message,
+					BucketName = $"dancountability-log-{_config.GetEnvironment()}",
+					Key = $"{prefix}/{fileNamePrefix}{keyName}"
+				};
+
+				var result = client.PutObjectAsync(putObjectRequest);
+			}
 		}
 	}
 }
