@@ -63,21 +63,22 @@ namespace Logging
 
 		private void SaveToS3(string message, [CallerMemberName] string callerName = "unknown")
 		{
-			var prefix = $"{callerName}/{DateTime.UtcNow:yyyy-MM-dd}";
-			var keyName = _illegalFileCharacters.Replace(message, "-").Substring(0, message.Length <= 30 ? message.Length : 30);
-			var fileNamePrefix = $"{DateTime.UtcNow:HH-mm-ss}";
-			
-			using (var client = _utilities.S3Client())
-			{
-				var putObjectRequest = new PutObjectRequest
-				{
-					ContentBody = message,
-					BucketName = $"dancountability-log-{_config.GetEnvironment()}",
-					Key = $"{prefix}/{fileNamePrefix}{keyName}"
-				};
-
-				var result = client.PutObjectAsync(putObjectRequest);
-			}
+			Console.WriteLine(message);
+//			var prefix = $"{callerName}/{DateTime.UtcNow:yyyy-MM-dd}";
+//			var keyName = _illegalFileCharacters.Replace(message, "-").Substring(0, message.Length <= 30 ? message.Length : 30);
+//			var fileNamePrefix = $"{DateTime.UtcNow:HH-mm-ss}";
+//			
+//			using (var client = _utilities.S3Client())
+//			{
+//				var putObjectRequest = new PutObjectRequest
+//				{
+//					ContentBody = message,
+//					BucketName = $"dancountability-log-{_config.GetEnvironment()}",
+//					Key = $"{prefix}/{fileNamePrefix}{keyName}"
+//				};
+//
+//				var result = client.PutObjectAsync(putObjectRequest);
+//			}
 		}
 	}
 }
