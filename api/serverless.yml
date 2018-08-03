@@ -60,6 +60,7 @@ resources:
         LifecycleConfiguration:
           Rules:
             - ExpirationInDays: 32
+              Status: Enabled
     incomingQueueParameter:
       Type: AWS::SSM::Parameter
       DependsOn: IncomingLogQueue
