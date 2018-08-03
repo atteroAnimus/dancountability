@@ -7,10 +7,6 @@ jobs:
     steps:
       - checkout
       - run:
-          name: restore
-          command: |
-            dotnet restore
-      - run:
           name: Run build scripts
           command: | 
             cd api/
